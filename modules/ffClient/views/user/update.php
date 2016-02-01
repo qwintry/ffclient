@@ -5,11 +5,11 @@
      * Date: 22.01.2016
      * Time: 17:21
      *
-     * @var \app\modules\ffClient\models\UserForm $model
+     * @var \app\models\User $model
      */
 ?>
 
-<h1>Update user: <?=$model->getUserName()?> <small><?=$model->email;?></small></h1>
+<h1>Update user: <?=$model->username?> <small><?=$model->email;?></small></h1>
 
 <?= $this->render('_form', [
     'model' => $model,

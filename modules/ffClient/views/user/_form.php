@@ -11,6 +11,7 @@
      * Time: 12:09
      *
      * @var array $attributes
+     * @var \app\models\User $model
      */
 
 ?>
@@ -26,9 +27,10 @@
         'enableClientValidation' => false,
     ]) ?>
 
-<?php foreach ($model->getAttributes() as $attribute => $value): ?>
-    <?= $form->field($model, $attribute) ?>
-<?php endforeach; ?>
+<?= $form->field($model, 'first_name') ?>
+<?= $form->field($model, 'last_name') ?>
+<?= $form->field($model, 'email') ?>
+<?= $form->field($model, 'ff_id') ?>
 
 <div class="form-group">
     <?= Html::submitButton(\Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>

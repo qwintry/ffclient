@@ -37,6 +37,11 @@
                     ],
                 ],
             ],
+            'urlManager' => [
+                'enablePrettyUrl' => true,
+                'showScriptName' => false,
+                'rules' => [],
+            ],
             'db'           => require(__DIR__.'/db.php'),
         ],
         'modules'    => [

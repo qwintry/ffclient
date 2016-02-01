@@ -2,8 +2,11 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\models\User;
     use app\modules\ffClient\models\UserForm;
+    use yii\data\ActiveDataProvider;
     use yii\data\ArrayDataProvider;
+    use yii\filters\AccessControl;
     use yii\helpers\ArrayHelper;
     use yii\helpers\VarDumper;
     use yii\web\HttpException;
@@ -18,16 +21,28 @@
     class UserController extends BaseController
     {
 
+        public function behaviors()
+        {
+            return [
+                'access' => [
+                    'class' => AccessControl::className(),
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'update', 'create', 'view'],
+                            'allow'   => true,
+                            'roles'   => ['@'],
+                        ],
+                    ],
+                ],
+            ];
+        }
+
         public function actionIndex()
         {
-            $filters = []; //all filters are optional
-            $route = $this->getApiRoute('user_index').'?'.http_build_query($filters);
-            $response = $this->doRequest($route);
-            $provider = new ArrayDataProvider([
-                'allModels' => $response,
+            $query = User::find();
+            $provider = new ActiveDataProvider([
+                'query' => $query,
             ]);
-
-            VarDumper::dump($response, 10, true);
 
             return $this->render('index', [
                 'provider' => $provider,
@@ -39,7 +54,7 @@
          */
         public function actionCreate()
         {
-            $model = new UserForm();
+            $model = new User();
 
             //get post data
             if ($model->load(\Yii::$app->request->post())) {
@@ -59,10 +74,14 @@
 
         public function actionUpdate($id)
         {
-            $model = $this->loadUser($id);
+            /**
+             * @var User $model
+             */
+            $model = User::findOne($id);
 
             //get post data
             if ($model->load(\Yii::$app->request->post())) {
+
                 $route = $this->getApiRoute('user_update');
                 $params = http_build_query([
                     'id' => $id,
@@ -72,6 +91,7 @@
                 $response = $this->doRequest($url, $model->getAttributes(), 'PATCH');
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
+                    $model->save(false);
                     $this->redirect(['/ffClient/user/index']);
                 }
             }
@@ -83,35 +103,10 @@
 
         public function actionView($id)
         {
-            $model = $this->loadUser($id);
+            $model = User::findOne($id);
 
             return $this->render('view', [
                 'model' => $model,
             ]);
-        }
-
-        /**
-         * @param $id
-         * @param \app\modules\ffClient\models\UserForm|null $model
-         *
-         * @throws \yii\web\NotFoundHttpException
-         */
-        protected function loadUser($id)
-        {
-            //load data from api
-            $route = $this->getApiRoute('user_index').'?id='.$id;
-            $response = $this->doRequest($route);
-            if ($user = ArrayHelper::getValue($response, 0)) {
-                //set attribute to model
-                $modelAttributes = [];
-                foreach ($user as $attribute => $value) {
-                    $modelAttributes[$attribute] = $value;
-                }
-                $model = new UserForm($modelAttributes);
-
-                return $model;
-            } else {
-                throw new NotFoundHttpException();
-            }
         }
     }

@@ -2,12 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\forms\SignupForm;
+use app\modules\ffClient\Module;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\forms\LoginForm;
+use app\models\forms\ContactForm;
 
 class SiteController extends Controller
 {
@@ -90,5 +93,37 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    /**
+     * Signs user up.
+     *
+     * @return mixed
+     */
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post())) {
+            /**
+             * @var Module $client
+             */
+            //try to create user in ff
+            $client = Yii::$app->getModule('ffClient');
+            $route = $client->getApiRoute('user_create');
+            //send data to ff api and check errors
+            $response = $client->doRequest($route, $model->getAttributes());
+            $model->checkApiErrors($response);
+            if(!$model->hasErrors()) {
+                $model->ff_id = ArrayHelper::getValue($response, 'id');
+                if ($user = $model->signup()) {
+                    if (Yii::$app->getUser()->login($user)) {
+                        return $this->goHome();
+                    }
+                }
+            }
+        }
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
     }
 }
