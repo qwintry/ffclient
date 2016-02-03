@@ -17,6 +17,7 @@
      * User: Cranky4
      * Date: 22.01.2016
      * Time: 13:43
+     *
      */
     class UserController extends BaseController
     {
@@ -78,6 +79,7 @@
              * @var User $model
              */
             $model = User::findOne($id);
+            $model->scenario = 'edit';
 
             //get post data
             if ($model->load(\Yii::$app->request->post())) {
