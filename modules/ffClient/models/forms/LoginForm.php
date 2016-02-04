@@ -7,6 +7,8 @@
     use Yii;
     use yii\base\Model;
     use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
     use yii\helpers\VarDumper;
 
     /**
@@ -78,23 +80,34 @@
             if ($this->_user === false) {
                 $user = User::findOne(['email' => $this->email]);
                 //if user not exists in client db, try to find him via ff api
-                if(!$user) {
+                if (!$user) {
                     /**
                      * @var Module $client
                      */
                     $client = Yii::$app->getModule('ffClient');
                     $url = $client->getApiRoute('user_index')."?email=".$this->email;
                     $response = $client->doRequest($url);
-                    if($ffUser = ArrayHelper::getValue($response, 0)) {
+                    if ($ffUser = ArrayHelper::getValue($response, 0)) {
                         $ffUser = (array)$ffUser;
                         $ffUser['ff_id'] = $ffUser['id'];
                         unset($ffUser['id']);
+                        //create him in ff-client and reset password
                         $user = new User();
                         $user->setAttributes($ffUser);
                         $user->setPassword(Yii::$app->security->generateRandomString(6));
                         $user->generateAuthKey();
-                        $user->save(false);
-                        $this->addError('password', 'You must reset your password');
+                        if ($user->save()) {
+                            $this->addError('password', 'You must '.Html::a('reset', Url::to([
+                                    '/site/request-password-reset',
+                                    'email' => $user->email,
+                                ])).' your password');
+                        } else {
+                            $errors = [];
+                            foreach ($user->getErrors() as $k => $error) {
+                                $errors[] = implode("\n", $error);
+                            }
+                            $this->addError('password', implode("\n", $errors));
+                        }
                     }
                 }
                 $this->_user = $user;

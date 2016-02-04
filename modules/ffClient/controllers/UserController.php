@@ -3,7 +3,6 @@
     namespace app\modules\ffClient\controllers;
 
     use app\models\User;
-    use app\modules\ffClient\models\UserForm;
     use yii\data\ActiveDataProvider;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;

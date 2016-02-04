@@ -26,7 +26,11 @@
 
     <?= $form->field($model, 'email') ?>
 
-    <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'password', [
+        'errorOptions' => [
+            'encode' => false,
+        ],
+    ])->passwordInput() ?>
 
     <?= $form->field($model, 'rememberMe')->checkbox([
         'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
@@ -35,6 +39,8 @@
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
             <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            <?= Html::a('Reset password', \yii\helpers\Url::to(['/site/request-password-reset']),
+                ['class' => 'btn btn-default', 'name' => 'reset-button']) ?>
         </div>
     </div>
 

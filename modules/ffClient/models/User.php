@@ -225,7 +225,7 @@
             if (!$this->isNewRecord) {
                 $this->username = $this->generateUsername();
             }
-            if($this->password && $this->scenario == 'edit') {
+            if ($this->password && $this->scenario == 'edit') {
                 $this->setPassword($this->password);
             }
 
@@ -256,4 +256,58 @@
 
             return $this->first_name.' '.$this->last_name.' #'.$this->id;
         }
+
+        /**
+         * Finds user by password reset token
+         *
+         * @param string $token password reset token
+         *
+         * @return static|null
+         */
+        public static function findByPasswordResetToken($token)
+        {
+            if (!static::isPasswordResetTokenValid($token)) {
+                return null;
+            }
+
+            return static::findOne([
+                'password_reset_token' => $token,
+                'status'               => self::STATUS_ACTIVE,
+            ]);
+        }
+
+        /**
+         * Finds out if password reset token is valid
+         *
+         * @param string $token password reset token
+         *
+         * @return boolean
+         */
+        public static function isPasswordResetTokenValid($token)
+        {
+            if (empty($token)) {
+                return false;
+            }
+            $timestamp = (int)substr($token, strrpos($token, '_') + 1);
+            $expire = 86400;
+
+            return $timestamp + $expire >= time();
+        }
+
+        /**
+         * Generates new password reset token
+         */
+        public function generatePasswordResetToken()
+        {
+            $this->password_reset_token = Yii::$app->security->generateRandomString().'_'.time();
+        }
+
+        /**
+         * Removes password reset token
+         */
+        public function removePasswordResetToken()
+        {
+            $this->password_reset_token = null;
+        }
+
     }

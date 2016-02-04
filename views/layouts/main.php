@@ -37,7 +37,7 @@
         $items = [
             ['label' => 'Users', 'url' => Url::to(['/ffClient/user/index'])],
         ];
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             $items[] = ['label' => 'Login', 'url' => ['/site/login']];
             $items[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         } else {
@@ -58,6 +58,12 @@
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+
+        <?php if ($flashes = Yii::$app->session->getAllFlashes()) {
+            foreach ($flashes as $flash) {
+                echo "<div class='alert alert-info'>".$flash."</div>";
+            }
+        } ?>
         <?= $content ?>
     </div>
 </div>
