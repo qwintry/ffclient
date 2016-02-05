@@ -48,7 +48,7 @@
             'ffClient' => [
                 'class' => 'app\modules\ffClient\Module',
                 'apiKey' => 'W-072qI4h5iCTQ_MwfcGI0T4RcU1zOYF',
-                'siteUrl' => 'http://ff.qwintry.loc/',
+                'siteUrl' => 'http://ff.qwintry.loc',
             ],
         ],
         'params'     => $params,

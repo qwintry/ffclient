@@ -34,13 +34,14 @@
                 'class' => 'navbar-inverse navbar-fixed-top',
             ],
         ]);
-        $items = [
-            ['label' => 'Users', 'url' => Url::to(['/ffClient/user/index'])],
-        ];
+        $items = [];
         if (Yii::$app->user->isGuest) {
             $items[] = ['label' => 'Login', 'url' => ['/site/login']];
             $items[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         } else {
+            $items[] = ['label' => 'Users', 'url' => Url::to(['/ffClient/user/index'])];
+            $items[] = ['label' => 'Expected Incoming', 'url' => Url::to(['/ffClient/expected-incoming/index'])];
+            $items[] = ['label' => 'Incoming', 'url' => Url::to(['/ffClient/incoming/index'])];
             $items[] = [
                 'label'       => 'Logout ('.Yii::$app->user->identity->username.')',
                 'url'         => ['/site/logout'],

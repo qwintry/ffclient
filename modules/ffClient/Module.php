@@ -6,6 +6,15 @@
 
     class Module extends \yii\base\Module
     {
+        const ROUTE_USER_INDEX = 'user_index';
+        const ROUTE_USER_CREATE = 'user_create';
+        const ROUTE_USER_UPDATE = 'user_update';
+        const ROUTE_EXPECTED_INCOMING_INDEX = 'expected_incoming_index';
+        const ROUTE_EXPECTED_INCOMING_VIEW = 'expected_incoming_view';
+        const ROUTE_EXPECTED_INCOMING_UPDATE = 'expected_incoming_update';
+        const ROUTE_INCOMING_INDEX = 'incoming_index';
+        const ROUTE_INCOMING_VIEW = 'incoming_view';
+
         public $controllerNamespace = 'app\modules\ffClient\controllers';
 
         /**
@@ -20,24 +29,39 @@
         public $siteUrl;
 
         /**
-         * User attributes
-         * @var array
-         */
-        public $userAttributes = [
-            'email',
-            'first_name',
-            'last_name',
-            'balance',
-        ];
-
-        /**
          * Api routes
          * @var array
          */
         public $routes = [
-            'user_index'  => 'api/user/index',
-            'user_create' => 'api/user/create',
-            'user_update' => 'api/user/update',
+            //user
+            self::ROUTE_USER_INDEX              => 'api/user/index',
+            self::ROUTE_USER_CREATE             => 'api/user/create',
+            self::ROUTE_USER_UPDATE             => 'api/user/update',
+            //expected incoming
+            self::ROUTE_EXPECTED_INCOMING_INDEX => 'api/expected-incoming/index',
+            self::ROUTE_EXPECTED_INCOMING_VIEW => 'api/expected-incoming/view',
+            self::ROUTE_EXPECTED_INCOMING_UPDATE => 'api/expected-incoming/update',
+            //incoming
+            self::ROUTE_INCOMING_INDEX => 'api/incoming/index',
+            self::ROUTE_INCOMING_VIEW => 'api/incoming/view',
+        ];
+
+        /**
+         * Attributes for create new expected incoming via api
+         * @var array
+         */
+        public static $expectedIncomingAttrs = [
+            'tracking',
+            'user_id',
+            'shop',
+            'decl_type',
+            'store_id',
+            'hub_id',
+            'received',
+            'user_notes',
+            'processed',
+            'specRequests',
+            'declaration'
         ];
 
         public function init()
@@ -55,6 +79,10 @@
          */
         public function doRequest($route, $data = null, $method = null)
         {
+            if ($moduleRoute = $this->getApiRoute($route)) {
+                $route = $moduleRoute;
+            }
+
             $url = $this->siteUrl.'/'.ltrim($route, "/");
 
             $ch = curl_init();
@@ -62,19 +90,19 @@
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->apiKey));
 
-            if($method) {
-                if($method == "POST") {
+            if ($method) {
+                if ($method == "POST") {
                     curl_setopt($ch, CURLOPT_POST, true);
                 } else {
                     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
                 }
             }
 
-            if($data) {
-                if(is_array($data)) {
+            if ($data) {
+                if (is_array($data)) {
                     $data = http_build_query($data);
                 }
-                if($method === null) {
+                if ($method === null) {
                     curl_setopt($ch, CURLOPT_POST, true);
                 }
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);

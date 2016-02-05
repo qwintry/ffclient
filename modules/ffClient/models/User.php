@@ -32,6 +32,8 @@
         const STATUS_DELETED = 0;
         const STATUS_ACTIVE = 10;
 
+        const SCENARIO_UPDATE = 'update';
+
         public $password;
 
         /**
@@ -225,7 +227,7 @@
             if (!$this->isNewRecord) {
                 $this->username = $this->generateUsername();
             }
-            if ($this->password && $this->scenario == 'edit') {
+            if ($this->password && $this->scenario == self::SCENARIO_UPDATE) {
                 $this->setPassword($this->password);
             }
 

@@ -31,7 +31,7 @@
 <?= $form->field($model, 'last_name') ?>
 <?= $form->field($model, 'email') ?>
 <?= $form->field($model, 'ff_id') ?>
-<?= $form->field($model, 'password')->passwordInput()?>
+<?= $form->field($model, 'password')->passwordInput() ?>
 
 <div class="form-group">
     <?= Html::submitButton(\Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>

@@ -5,6 +5,7 @@
     use app\modules\ffClient\Module;
     use yii\helpers\ArrayHelper;
     use yii\web\Controller;
+    use yii\web\HttpException;
 
     /**
      * Created by PhpStorm.
@@ -14,6 +15,17 @@
      */
     class BaseController extends Controller
     {
+        /**
+         * @var Module
+         */
+        public $client;
+
+        public function init()
+        {
+            $this->client = \Yii::$app->getModule('ffClient');
+
+            parent::init();
+        }
 
         /**
          * @param $route
@@ -23,23 +35,18 @@
          */
         public function doRequest($route, $data = null, $method = null)
         {
-            /**
-             * @var Module $client
-             */
-            $client = \Yii::$app->getModule('ffClient');
-            return $client->doRequest($route, $data, $method);
+            $response = $this->client->doRequest($route, $data, $method);
+            $this->checkHttpError($response);
+            return $response;
         }
 
         /**
          * Get user attributes from ffClient module
          * @return array
          */
-        public function getUserAttributes() {
-            /**
-             * @var Module $ffClient
-             */
-            $ffClient = \Yii::$app->getModule('ffClient');
-            return $ffClient->userAttributes;
+        public function getUserAttributes()
+        {
+            return $this->client->userAttributes;
         }
 
         /**
@@ -49,10 +56,21 @@
          */
         public function getApiRoute($route)
         {
-            /**
-             * @var Module $ffClient
-             */
-            $ffClient = \Yii::$app->getModule('ffClient');
-            return $ffClient->getApiRoute($route);
+            return $this->client->getApiRoute($route);
         }
+
+        /**
+         * @param $response
+         */
+        public function checkHttpError($response)
+        {
+            if (is_object($response)) {
+                $response = (array)$response;
+            }
+
+            if (ArrayHelper::getValue($response, 'message') && ArrayHelper::getValue($response, 'status')) {
+                throw new HttpException($response['status'], $response['message']);
+            }
+        }
+
     }

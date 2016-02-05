@@ -78,7 +78,7 @@
              * @var User $model
              */
             $model = User::findOne($id);
-            $model->scenario = 'edit';
+            $model->scenario = \app\modules\ffClient\models\User::SCENARIO_UPDATE;
 
             //get post data
             if ($model->load(\Yii::$app->request->post())) {
