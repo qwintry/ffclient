@@ -20,7 +20,7 @@
 ?>
 
     <h1>Incoming: <?= $title ?> #<?= $model->id ?>
-        <?= Html::a('Update', \yii\helpers\Url::to(['/ffClient/incoming/update', 'id' => $model->id]), [
+        <?= Html::a('Edit', \yii\helpers\Url::to(['/ffClient/incoming/update', 'id' => $model->id]), [
             'class' => 'btn btn-warning  btn-sm',
         ]) ?>
     </h1>
@@ -44,7 +44,7 @@
 ]); ?>
 
     <h2>Items in declaration:
-        <?= Html::a('Update', \yii\helpers\Url::to(['/ffClient/incoming/declaration-update', 'id' => $model->id]), [
+        <?= Html::a('Edit', \yii\helpers\Url::to(['/ffClient/incoming/declaration-update', 'id' => $model->id]), [
             'class' => 'btn btn-warning btn-sm',
         ]) ?>
     </h2>
@@ -61,20 +61,19 @@
     ],
 ]); ?>
 
-<?php if ($model->packageThumbnails): ?>
     <h2>Thumbnails:</h2>
-    <?php foreach ($model->packageThumbnails as $thumbnail): ?>
-        <?= \yii\helpers\Html::img("http://ff.qwintry.loc/file/download?id=".$thumbnail->id); ?>
-    <?php endforeach; ?>
-<?php endif; ?>
+<?php foreach ($model->packageThumbnails as $thumbnail): ?>
+    <?= \yii\helpers\Html::img("http://ff.qwintry.loc/file/download?id=".$thumbnail->id); ?>
+<?php endforeach; ?>
 
-
-<?php if ($specialRequestsProvider): ?>
-    <h2>Special Requests:</h2>
-    <?= \yii\grid\GridView::widget([
-        'dataProvider' => $specialRequestsProvider,
-    ]); ?>
-<?php endif; ?>
+    <h2>Special Requests:
+        <?= Html::a('Create', \yii\helpers\Url::to(['/ffClient/incoming/special-request-create', 'id' => $model->id]), [
+            'class' => 'btn btn-success btn-sm',
+        ]) ?>
+    </h2>
+<?= \yii\grid\GridView::widget([
+    'dataProvider' => $specialRequestsProvider,
+]); ?>
 
 
 <?= \yii\helpers\Html::a('List', \yii\helpers\Url::to(['/ffClient/incoming/index']), [

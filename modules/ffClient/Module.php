@@ -12,9 +12,11 @@
         const ROUTE_EXPECTED_INCOMING_INDEX = 'expected_incoming_index';
         const ROUTE_EXPECTED_INCOMING_VIEW = 'expected_incoming_view';
         const ROUTE_EXPECTED_INCOMING_UPDATE = 'expected_incoming_update';
+        const ROUTE_EXPECTED_INCOMING_CREATE = 'exptected_incoming_create';
         const ROUTE_INCOMING_INDEX = 'incoming_index';
         const ROUTE_INCOMING_VIEW = 'incoming_view';
         const ROUTE_INCOMING_UPDATE = 'incoming_update';
+        const ROUTE_SPECIAL_REQUEST_CREATE= 'special_request_create';
 
         public $controllerNamespace = 'app\modules\ffClient\controllers';
 
@@ -42,10 +44,13 @@
             self::ROUTE_EXPECTED_INCOMING_INDEX  => 'api/expected-incoming/index',
             self::ROUTE_EXPECTED_INCOMING_VIEW   => 'api/expected-incoming/view',
             self::ROUTE_EXPECTED_INCOMING_UPDATE => 'api/expected-incoming/update',
+            self::ROUTE_EXPECTED_INCOMING_CREATE => 'api/expected-incoming/create',
             //incoming
             self::ROUTE_INCOMING_INDEX           => 'api/incoming/index',
             self::ROUTE_INCOMING_VIEW            => 'api/incoming/view',
             self::ROUTE_INCOMING_UPDATE          => 'api/incoming/update',
+            //spec request
+            self::ROUTE_SPECIAL_REQUEST_CREATE   => 'api/spec-request/create'
         ];
 
         /**
@@ -57,13 +62,10 @@
             'user_id',
             'shop',
             'decl_type',
-            'store_id',
             'hub_id',
             'received',
             'user_notes',
             'processed',
-            'specRequests',
-            'declaration',
         ];
 
         /**
@@ -96,6 +98,21 @@
           'line_weight',
           'url',
           'qty'
+        ];
+
+        /**
+         * Attributes for create or update incoming's special request via api
+         * @var array
+         */
+        public static $SpecialRequestForm = [
+          'customerNotes',
+          'type',
+          'status',
+          'notes',
+          'handling',
+          'charge',
+          'authorId',
+          'hub_id',
         ];
 
         public function init()

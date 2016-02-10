@@ -13,6 +13,7 @@
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
     use yii\helpers\ArrayHelper;
+    use yii\helpers\Url;
     use yii\helpers\VarDumper;
     use yii\web\NotFoundHttpException;
 
@@ -35,14 +36,30 @@
         }
 
         /**
+         * @param array $addFilter
+         *
+         * @return array
+         */
+        public function getFilter(array $addFilter = [])
+        {
+            $defaultFilter = [
+                'expand' => 'specRequests, declaration',
+            ];
+
+            if ($addFilter) {
+                return ArrayHelper::merge($defaultFilter, $addFilter);
+            }
+
+            return $defaultFilter;
+        }
+
+        /**
          * @return string
          */
         public function actionIndex()
         {
-            $filter = [
-                'expand' => 'specRequests, declaration',
-            ];
-            $url = $this->getApiRoute(Module::ROUTE_EXPECTED_INCOMING_INDEX)."?".http_build_query($filter);
+            $filter = $this->getFilter();
+            $url = $this->getApiRoute(Module::ROUTE_EXPECTED_INCOMING_INDEX, $filter);
             $response = $this->doRequest($url);
 
             $provider = new ArrayDataProvider([
@@ -63,11 +80,8 @@
          */
         public function actionView($id)
         {
-            $filter = [
-                'id'     => $id,
-                'expand' => 'specRequests, declaration',
-            ];
-            $url = $this->getApiRoute(Module::ROUTE_EXPECTED_INCOMING_VIEW)."?".http_build_query($filter);
+            $filter = $this->getFilter(['id' => $id]);
+            $url = $this->getApiRoute(Module::ROUTE_EXPECTED_INCOMING_VIEW, $filter);
             if ($response = $this->doRequest($url)) {
 
                 return $this->render('view', [
@@ -78,22 +92,33 @@
             throw new NotFoundHttpException();
         }
 
+        /**
+         * @param $id
+         *
+         * @return string
+         * @throws \yii\web\NotFoundHttpException
+         */
         public function actionUpdate($id)
         {
-            $filter = [
-                'id'     => $id,
-                'expand' => 'specRequests, declaration',
-            ];
-            $url = $this->getApiRoute(Module::ROUTE_EXPECTED_INCOMING_VIEW)."?".http_build_query($filter);
-            if ($response = $this->doRequest($url)) {
-                $attrs = [];
-                foreach (Module::$expectedIncomingAttrs as $attr) {
-                    if (ArrayHelper::getValue($response, $attr, false) !== false) {
-                        $value = ArrayHelper::getValue($response, $attr);
-                        $attrs[$attr] = $value;
+            $model = $this->getModel(ExpectedIncomingForm::className(), $id);
+
+            //saving data
+            if ($data = \Yii::$app->request->post('IncomingForm')) {
+                $url = $this->getApiRoute(Module::ROUTE_EXPECTED_INCOMING_VIEW, ['id' => $id]);
+                if ($response = $this->doRequest($url, $data, 'PATCH')) {
+                    $model->checkApiErrors($response);
+                    if (!$model->hasErrors()) {
+                        return $this->redirect(Url::to(['view', 'id' => $model->id]));
                     }
                 }
-                $model = new ExpectedIncomingForm($attrs);
+            }
+
+            //render update form
+            $filter = $this->getFilter(['id' => $id]);
+            $url = $this->getApiRoute(Module::ROUTE_EXPECTED_INCOMING_VIEW, $filter);
+
+            if ($response = $this->doRequest($url)) {
+                $model->setAttributes((array)$response, false);
 
                 return $this->render('update', [
                     'model' => $model,
@@ -101,5 +126,23 @@
             }
 
             throw new NotFoundHttpException();
+        }
+
+        public function actionCreate()
+        {
+            $model = $this->getModel(ExpectedIncomingForm::className());
+
+            if ($data = \Yii::$app->request->post('ExpectedIncomingForm')) {
+                $response = $this->doRequest(Module::ROUTE_EXPECTED_INCOMING_CREATE, $data);
+                $model->setAttributes($data, false);
+                $model->checkApiErrors($response);
+                if (!$model->hasErrors()) {
+                    return $this->redirect(Url::to(['index']));
+                }
+            }
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
     }

@@ -11,9 +11,17 @@
      *
      * @var \yii\data\ArrayDataProvider $provider
      */
+
+    $title = 'Users';
+    $this->title = 'Users';
+
 ?>
 
-<?= Html::a('Create', Url::toRoute(['/ffClient/user/create']), ['class' => 'btn btn-success']) ?>
+<h1>
+    <?= $title ?>
+    <?= Html::a('Create', Url::toRoute(['/ffClient/user/create']), ['class' => 'btn btn-success btn-sm']) ?>
+</h1>
+
 
 <?= GridView::widget([
     'dataProvider' => $provider,
@@ -26,16 +34,16 @@
         [
             'class'    => \yii\grid\ActionColumn::className(),
             'template' => '{view} {update}',
-//            'buttons'  => [
-//                'view' => function ($url, $model) {
-//                    return Html::a('<i class="glyphicon glyphicon-eye-open"></i>',
-//                        Url::toRoute(['/ffClient/user/view', 'id' => $model->id]));
-//                },
-//                'update' => function ($url, $model) {
-//                    return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
-//                        Url::toRoute(['/ffClient/user/update', 'id' => $model->id]));
-//                },
-//            ],
+            //            'buttons'  => [
+            //                'view' => function ($url, $model) {
+            //                    return Html::a('<i class="glyphicon glyphicon-eye-open"></i>',
+            //                        Url::toRoute(['/ffClient/user/view', 'id' => $model->id]));
+            //                },
+            //                'update' => function ($url, $model) {
+            //                    return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
+            //                        Url::toRoute(['/ffClient/user/update', 'id' => $model->id]));
+            //                },
+            //            ],
         ],
     ],
 ]) ?>

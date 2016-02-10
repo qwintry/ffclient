@@ -56,9 +56,9 @@
          *
          * @return mixed
          */
-        public function getApiRoute($route)
+        public function getApiRoute($route, array $get = [])
         {
-            return $this->client->getApiRoute($route);
+            return $this->client->getApiRoute($route)."?".http_build_query($get);
         }
 
         /**

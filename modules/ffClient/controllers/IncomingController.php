@@ -10,6 +10,7 @@
 
     use app\modules\ffClient\models\forms\DeclarationForm;
     use app\modules\ffClient\models\forms\IncomingForm;
+    use app\modules\ffClient\models\forms\SpecialRequestForm;
     use app\modules\ffClient\Module;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
@@ -28,7 +29,14 @@
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['index', 'update', 'create', 'view', 'declaration-update'],
+                            'actions' => [
+                                'index',
+                                'update',
+                                'create',
+                                'view',
+                                'declaration-update',
+                                'special-request-create',
+                            ],
                             'allow'   => true,
                             'roles'   => ['@'],
                         ],
@@ -62,9 +70,8 @@
         public function actionIndex()
         {
             $filter = $this->getFilter();
-            $url = $this->getApiRoute(Module::ROUTE_INCOMING_INDEX)."?".http_build_query($filter);
+            $url = $this->getApiRoute(Module::ROUTE_INCOMING_INDEX, $filter);
             $response = $this->doRequest($url);
-            VarDumper::dump($response, 10, true);
             $provider = new ArrayDataProvider([
                 'models'     => $response,
                 'totalCount' => count($response),
@@ -84,16 +91,13 @@
         public function actionView($id)
         {
             $filter = $this->getFilter(['id' => $id]);
-            $url = $this->getApiRoute(Module::ROUTE_INCOMING_VIEW)."?".http_build_query($filter);
+            $url = $this->getApiRoute(Module::ROUTE_INCOMING_VIEW, $filter);
             $incoming = $this->doRequest($url);
 
-            $specialRequestsProvider = false;
-            if ($incoming->specRequests) {
-                $specialRequestsProvider = new ArrayDataProvider([
-                    'models'     => $incoming->specRequests,
-                    'totalCount' => count($incoming->specRequests),
-                ]);
-            }
+            $specialRequestsProvider = new ArrayDataProvider([
+                'models'     => $incoming->specRequests,
+                'totalCount' => count($incoming->specRequests),
+            ]);
 
             $declarationProvider = new ArrayDataProvider([
                 'models'     => $incoming->declaration,
@@ -119,7 +123,7 @@
 
             //saving data
             if ($data = \Yii::$app->request->post('IncomingForm')) {
-                $url = $this->getApiRoute(Module::ROUTE_INCOMING_UPDATE)."?id=$id";
+                $url = $this->getApiRoute(Module::ROUTE_INCOMING_UPDATE, ['id' => $id]);
                 if ($response = $this->doRequest($url, $data, 'PATCH')) {
                     $model->checkApiErrors($response);
                     if (!$model->hasErrors()) {
@@ -130,7 +134,7 @@
 
             //render update form
             $filter = $this->getFilter(['id' => $id]);
-            $url = $this->getApiRoute(Module::ROUTE_INCOMING_VIEW)."?".http_build_query($filter);
+            $url = $this->getApiRoute(Module::ROUTE_INCOMING_VIEW, $filter);
 
             if ($response = $this->doRequest($url)) {
                 $model->setAttributes((array)$response, false);
@@ -146,7 +150,7 @@
         public function actionDeclarationUpdate($id)
         {
             $filter = $this->getFilter(['id' => $id]);
-            $url = $this->getApiRoute(Module::ROUTE_INCOMING_VIEW)."?".http_build_query($filter);
+            $url = $this->getApiRoute(Module::ROUTE_INCOMING_VIEW, $filter);
             if ($response = $this->doRequest($url)) {
                 $models = [];
                 foreach ($response->declaration as $item) {
@@ -157,7 +161,7 @@
 
                 //saving data
                 if ($data = \Yii::$app->request->post('DeclarationForm')) {
-                    $url = $this->getApiRoute(Module::ROUTE_INCOMING_UPDATE)."?".http_build_query($filter);
+                    $url = $this->getApiRoute(Module::ROUTE_INCOMING_UPDATE, $filter);
                     $data = ['items' => $data];
                     if ($response = $this->doRequest($url, $data, 'PATCH')) {
                         return $this->redirect(Url::to(['view', 'id' => $id]));
@@ -168,10 +172,28 @@
 
                 //render view
                 return $this->render('declaration-update', [
-                    'models' => $models
+                    'models' => $models,
                 ]);
             }
 
             throw new NotFoundHttpException();
+        }
+
+        public function actionSpecialRequestCreate($id)
+        {
+            $model = $this->getModel(SpecialRequestForm::className());
+
+            if ($model->load(\Yii::$app->request->post())) {
+                $url = $this->getApiRoute(Module::ROUTE_SPECIAL_REQUEST_CREATE, ['id' => $id]);
+                $response = $this->doRequest($url, $model->getAttributes());
+                $model->checkApiErrors($response);
+                if (!$model->hasErrors()) {
+                    return $this->redirect(Url::to(['view', 'id' => $id]));
+                }
+            }
+
+            return $this->render('special-request', [
+                'model' => $model,
+            ]);
         }
     }

@@ -14,7 +14,12 @@
     $this->title = $title;
 ?>
 
-<h1><?= $title ?></h1>
+<h1>
+    <?= $title ?>
+    <?= Html::a('Create', \yii\helpers\Url::to(['/ffClient/expected-incoming/create']), [
+        'class' => 'btn btn-success  btn-sm',
+    ]) ?>
+</h1>
 
 <?= \yii\grid\GridView::widget([
     'dataProvider' => $provider,

@@ -16,7 +16,10 @@
     $this->title = $title;
 ?>
 
-<h1><?= $title ?></h1>
+<h1>
+    <?= $title ?>
+
+</h1>
 
 <?= \yii\grid\GridView::widget([
     'dataProvider' => $provider,
