@@ -12,10 +12,10 @@
     use yii\base\DynamicModel;
 
     /**
-     * Class ExpectedIncomingForm
+     * Class IncomingForm
      * @package app\modules\ffClient\models\forms
      */
-    class ExpectedIncomingForm extends ApiModel
+    class IncomingForm extends ApiModel
     {
 
     }

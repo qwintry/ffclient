@@ -14,6 +14,7 @@
         const ROUTE_EXPECTED_INCOMING_UPDATE = 'expected_incoming_update';
         const ROUTE_INCOMING_INDEX = 'incoming_index';
         const ROUTE_INCOMING_VIEW = 'incoming_view';
+        const ROUTE_INCOMING_UPDATE = 'incoming_update';
 
         public $controllerNamespace = 'app\modules\ffClient\controllers';
 
@@ -34,20 +35,21 @@
          */
         public $routes = [
             //user
-            self::ROUTE_USER_INDEX              => 'api/user/index',
-            self::ROUTE_USER_CREATE             => 'api/user/create',
-            self::ROUTE_USER_UPDATE             => 'api/user/update',
+            self::ROUTE_USER_INDEX               => 'api/user/index',
+            self::ROUTE_USER_CREATE              => 'api/user/create',
+            self::ROUTE_USER_UPDATE              => 'api/user/update',
             //expected incoming
-            self::ROUTE_EXPECTED_INCOMING_INDEX => 'api/expected-incoming/index',
-            self::ROUTE_EXPECTED_INCOMING_VIEW => 'api/expected-incoming/view',
+            self::ROUTE_EXPECTED_INCOMING_INDEX  => 'api/expected-incoming/index',
+            self::ROUTE_EXPECTED_INCOMING_VIEW   => 'api/expected-incoming/view',
             self::ROUTE_EXPECTED_INCOMING_UPDATE => 'api/expected-incoming/update',
             //incoming
-            self::ROUTE_INCOMING_INDEX => 'api/incoming/index',
-            self::ROUTE_INCOMING_VIEW => 'api/incoming/view',
+            self::ROUTE_INCOMING_INDEX           => 'api/incoming/index',
+            self::ROUTE_INCOMING_VIEW            => 'api/incoming/view',
+            self::ROUTE_INCOMING_UPDATE          => 'api/incoming/update',
         ];
 
         /**
-         * Attributes for create new expected incoming via api
+         * Attributes for create or update expected incoming via api
          * @var array
          */
         public static $expectedIncomingAttrs = [
@@ -61,7 +63,26 @@
             'user_notes',
             'processed',
             'specRequests',
-            'declaration'
+            'declaration',
+        ];
+
+        /**
+         * Attributes for create or update incoming via api
+         * @var array
+         */
+        public static $incomingAttrs = [
+            'tracking',
+            'shop',
+            'status',
+            'weight',
+            'user_id',
+            'outgoing_id',
+            'decl_type',
+            'op_notes',
+            'hub_id',
+            'location',
+            'expected_incoming_id',
+            'part_number'
         ];
 
         public function init()

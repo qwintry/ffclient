@@ -2,7 +2,9 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\modules\ffClient\models\ApiModel;
     use app\modules\ffClient\Module;
+    use yii\base\DynamicModel;
     use yii\helpers\ArrayHelper;
     use yii\web\Controller;
     use yii\web\HttpException;
@@ -71,6 +73,26 @@
             if (ArrayHelper::getValue($response, 'message') && ArrayHelper::getValue($response, 'status')) {
                 throw new HttpException($response['status'], $response['message']);
             }
+        }
+
+        /**
+         * @param string $modelClass
+         * @param null $response
+         *
+         * @return ApiModel
+         */
+        public function getModel($modelClass, $id = null)
+        {
+            $attrs = [];
+            foreach (Module::$incomingAttrs as $attr) {
+                $attrs[$attr] = null;
+            }
+
+            if ($id) {
+                $attrs['id'] = $id;
+            }
+
+            return new $modelClass($attrs);
         }
 
     }

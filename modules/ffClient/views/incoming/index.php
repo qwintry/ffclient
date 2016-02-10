@@ -1,6 +1,6 @@
 <?php
-    use \yii\helpers\Html;
-    use \yii\helpers\Url;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
     /**
      * Created by PhpStorm.
@@ -34,7 +34,13 @@
         'op_notes',
         'hub_id',
         'location',
-        'expected_incoming_id',
+        [
+            'class'   => \yii\grid\Column::className(),
+            'header'  => 'Package Img',
+            'content' => function ($model, $key, $index) {
+                return count($model->packageThumbnails);
+            },
+        ],
         [
             'class'    => \yii\grid\ActionColumn::className(),
             'template' => '{view} {update}',
