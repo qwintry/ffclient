@@ -52,7 +52,7 @@
          * Attributes for create or update expected incoming via api
          * @var array
          */
-        public static $expectedIncomingAttrs = [
+        public static $ExpectedIncomingForm = [
             'tracking',
             'user_id',
             'shop',
@@ -70,7 +70,7 @@
          * Attributes for create or update incoming via api
          * @var array
          */
-        public static $incomingAttrs = [
+        public static $IncomingForm = [
             'tracking',
             'shop',
             'status',
@@ -83,6 +83,19 @@
             'location',
             'expected_incoming_id',
             'part_number'
+        ];
+
+        /**
+         * Attributes for create or update incoming's declaration via api
+         * @var array
+         */
+        public static $DeclarationForm = [
+          'descr',
+          'descr_ru',
+          'line_value',
+          'line_weight',
+          'url',
+          'qty'
         ];
 
         public function init()

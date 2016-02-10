@@ -84,7 +84,9 @@
         public function getModel($modelClass, $id = null)
         {
             $attrs = [];
-            foreach (Module::$incomingAttrs as $attr) {
+            $classPieces = explode("\\",$modelClass);
+            $class = array_pop($classPieces);
+            foreach (Module::$$class as $attr) {
                 $attrs[$attr] = null;
             }
 

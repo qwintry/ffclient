@@ -23,7 +23,7 @@
         'enableClientValidation' => true,
     ]) ?>
 
-<?php foreach (Module::$incomingAttrs as $attribute): ?>
+<?php foreach (Module::$IncomingForm as $attribute): ?>
     <? //TODO:сделать норм?>
     <?= $form->field($model, $attribute); ?>
 <?php endforeach; ?>

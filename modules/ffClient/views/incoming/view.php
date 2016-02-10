@@ -9,16 +9,22 @@
      * @var \yii\data\ArrayDataProvider $specialRequestsProvider
      * @var \yii\data\ArrayDataProvider $declarationProvider
      */
+    use yii\grid\ActionColumn;
+    use yii\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\DetailView;
+
     $title = $model->tracking;
     $this->title = $title;
 ?>
 
     <h1>Incoming: <?= $title ?> #<?= $model->id ?>
-        <?= \yii\helpers\Html::a('Update', \yii\helpers\Url::to(['/ffClient/incoming/update', 'id' => $model->id]), [
+        <?= Html::a('Update', \yii\helpers\Url::to(['/ffClient/incoming/update', 'id' => $model->id]), [
             'class' => 'btn btn-warning  btn-sm',
         ]) ?>
     </h1>
-<?= \yii\widgets\DetailView::widget([
+<?= DetailView::widget([
     'model'      => $model,
     'attributes' => [
         'id',
@@ -37,16 +43,23 @@
     ],
 ]); ?>
 
-<?php if ($declarationProvider): ?>
     <h2>Items in declaration:
-        <?= \yii\helpers\Html::a('Update', \yii\helpers\Url::to(['/ffClient/incoming/declaration-update', 'id' => $model->id]), [
+        <?= Html::a('Update', \yii\helpers\Url::to(['/ffClient/incoming/declaration-update', 'id' => $model->id]), [
             'class' => 'btn btn-warning btn-sm',
         ]) ?>
     </h2>
-    <?= \yii\grid\GridView::widget([
-        'dataProvider' => $declarationProvider,
-    ]); ?>
-<?php endif; ?>
+<?= GridView::widget([
+    'dataProvider' => $declarationProvider,
+    'columns'      => [
+        'id',
+        'descr',
+        'descr_ru',
+        'line_value',
+        'line_weight',
+        'url',
+        'qty',
+    ],
+]); ?>
 
 <?php if ($model->packageThumbnails): ?>
     <h2>Thumbnails:</h2>

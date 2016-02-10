@@ -8,6 +8,7 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\modules\ffClient\models\forms\DeclarationForm;
     use app\modules\ffClient\models\forms\IncomingForm;
     use app\modules\ffClient\Module;
     use yii\data\ArrayDataProvider;
@@ -94,13 +95,10 @@
                 ]);
             }
 
-            $declarationProvider = false;
-            if ($incoming->declaration) {
-                $declarationProvider = new ArrayDataProvider([
-                    'models'     => $incoming->declaration,
-                    'totalCount' => count($incoming->declaration),
-                ]);
-            }
+            $declarationProvider = new ArrayDataProvider([
+                'models'     => $incoming->declaration,
+                'totalCount' => count($incoming->declaration),
+            ]);
 
             return $this->render('view', [
                 'model'                   => $incoming,
@@ -136,6 +134,7 @@
 
             if ($response = $this->doRequest($url)) {
                 $model->setAttributes((array)$response, false);
+
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -146,5 +145,33 @@
 
         public function actionDeclarationUpdate($id)
         {
+            $filter = $this->getFilter(['id' => $id]);
+            $url = $this->getApiRoute(Module::ROUTE_INCOMING_VIEW)."?".http_build_query($filter);
+            if ($response = $this->doRequest($url)) {
+                $models = [];
+                foreach ($response->declaration as $item) {
+                    $model = $this->getModel(DeclarationForm::className(), $item->id);
+                    $model->setAttributes((array)$item, false);
+                    $models[] = $model;
+                }
+
+                //saving data
+                if ($data = \Yii::$app->request->post('DeclarationForm')) {
+                    $url = $this->getApiRoute(Module::ROUTE_INCOMING_UPDATE)."?".http_build_query($filter);
+                    $data = ['items' => $data];
+                    if ($response = $this->doRequest($url, $data, 'PATCH')) {
+                        return $this->redirect(Url::to(['view', 'id' => $id]));
+                    }
+                }
+
+                $models[] = $this->getModel(DeclarationForm::className());
+
+                //render view
+                return $this->render('declaration-update', [
+                    'models' => $models
+                ]);
+            }
+
+            throw new NotFoundHttpException();
         }
     }
