@@ -8,9 +8,9 @@
 
     namespace app\modules\ffClient\controllers;
 
-    use app\modules\ffClient\models\forms\DeclarationForm;
     use app\modules\ffClient\models\forms\OutgoingForm;
-    use app\modules\ffClient\Module;
+    use app\modules\ffClient\models\Incoming;
+    use app\modules\ffClient\models\Outgoing;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
     use yii\helpers\ArrayHelper;
@@ -44,35 +44,15 @@
         }
 
         /**
-         * @param array $addFilter
-         *
-         * @return array
-         */
-        public function getFilter(array $addFilter = [])
-        {
-            $defaultFilter = [
-                'expand' => 'declaration, storeInvoice',
-            ];
-
-            if ($addFilter) {
-                return ArrayHelper::merge($defaultFilter, $addFilter);
-            }
-
-            return $defaultFilter;
-        }
-
-        /**
          * @return string
          */
         public function actionIndex()
         {
-            $filter = $this->getFilter();
-            $url = $this->getApiRoute(Module::ROUTE_OUTGOING_INDEX, $filter);
-            $response = $this->doRequest($url);
+            $outgoings = Outgoing::findAll();
 
             $provider = new ArrayDataProvider([
-                'models'     => $response,
-                'totalCount' => count($response),
+                'models'     => $outgoings,
+                'totalCount' => count($outgoings),
             ]);
 
             return $this->render('index', [
@@ -87,17 +67,15 @@
          */
         public function actionView($id)
         {
-            $filter = $this->getFilter(['id' => $id]);
-            $url = $this->getApiRoute(Module::ROUTE_OUTGOING_VIEW, $filter);
-            $response = $this->doRequest($url);
+            $outgoing = Outgoing::findOne(['id' => $id]);
 
             $declarationProvider = new ArrayDataProvider([
-                'models' => $response->declaration,
-                'totalCount' => count($response->declaration),
+                'models'     => $outgoing->declaration,
+                'totalCount' => count($outgoing->declaration),
             ]);
 
             return $this->render('view', [
-                'model' => $response,
+                'model'               => $outgoing,
                 'declarationProvider' => $declarationProvider,
             ]);
         }
@@ -107,19 +85,27 @@
          */
         public function actionCreate()
         {
-            $model = $this->getModel(OutgoingForm::className());
+            $model = $this->getForm(OutgoingForm::className());
+            if($incomings = Incoming::findAll()) {
+                $incomings = ArrayHelper::map($incomings, 'id', 'tracking');
+            } else {
+                $incomings = [];
+            }
+
 
             if ($data = \Yii::$app->request->post('OutgoingForm')) {
-                $response = $this->doRequest(Module::ROUTE_OUTGOING_CREATE, $data);
-                $model->setAttributes($data, false);
-                $model->checkApiErrors($response);
-                if (!$model->hasErrors()) {
-                    return $this->redirect(Url::to(['index']));
+                if ($outgoing = Outgoing::create($data)) {
+                    $model->checkApiErrors($outgoing);
+                    if (!$model->hasErrors()) {
+                        return $this->redirect(Url::to(['index']));
+                    }
                 }
+                $model->setAttributes($data, false);
             }
 
             return $this->render('create', [
                 'model' => $model,
+                'incomings' => $incomings,
             ]);
         }
     }

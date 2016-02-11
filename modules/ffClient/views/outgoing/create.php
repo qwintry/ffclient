@@ -7,6 +7,7 @@
      *
      * @var \yii\base\View $this
      * @var \app\modules\ffClient\models\forms\ExpectedIncomingForm $model
+     * @var array $incomings
      */
 
     $title = 'Create new Outgoing';
@@ -16,5 +17,6 @@
 <h1><?= $title ?></h1>
 
 <?= $this->render('_form', [
-    'model' => $model,
+    'model'     => $model,
+    'incomings' => $incomings,
 ]) ?>

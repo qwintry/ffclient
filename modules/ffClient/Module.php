@@ -166,6 +166,7 @@
             'deliveryType',
             'deliveryPickup',
             'storeInvoice',
+            'incomingSelected'
         ];
 
         public function init()

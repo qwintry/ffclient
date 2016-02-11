@@ -12,7 +12,10 @@
      *
      * @var \yii\base\View $this
      * @var \app\modules\ffClient\models\forms\OutgoingForm $model
+     * @var array $incomings
      */
+
+    $attributes = Module::$OutgoingForm;
 ?>
 
 <?php
@@ -23,11 +26,15 @@
         'enableClientValidation' => true,
     ]) ?>
 
-<?= $form->errorSummary($model);?>
+<?= $form->errorSummary($model); ?>
 
-<?php foreach (Module::$OutgoingForm as $attribute): ?>
+<?= $form->field($model, 'incomingSelected')->checkboxList($incomings); ?>
+
+<?php foreach ($attributes as $attribute): ?>
     <? //TODO:сделать норм?>
-    <?= $form->field($model, $attribute); ?>
+    <?php if ('incomingSelected' != $attribute): ?>
+        <?= $form->field($model, $attribute); ?>
+    <?php endif; ?>
 <?php endforeach; ?>
 
 <div class="form-group">

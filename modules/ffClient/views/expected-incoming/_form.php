@@ -22,7 +22,7 @@
         'enableAjaxValidation'   => true,
         'enableClientValidation' => true,
     ]) ?>
-
+<?= $form->errorSummary($model) ?>
 <?php foreach (Module::$ExpectedIncomingForm as $attribute): ?>
     <? //TODO:сделать норм?>
     <?= $form->field($model, $attribute); ?>

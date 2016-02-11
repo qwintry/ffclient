@@ -2,7 +2,7 @@
 
     namespace app\modules\ffClient\controllers;
 
-    use app\modules\ffClient\models\ApiModel;
+    use app\modules\ffClient\models\forms\ApiForm;
     use app\modules\ffClient\Module;
     use yii\base\DynamicModel;
     use yii\helpers\ArrayHelper;
@@ -39,6 +39,7 @@
         {
             $response = $this->client->doRequest($route, $data, $method);
             $this->checkHttpError($response);
+
             return $response;
         }
 
@@ -63,6 +64,8 @@
 
         /**
          * @param $response
+         *
+         * @throws \yii\web\HttpException
          */
         public function checkHttpError($response)
         {
@@ -78,13 +81,12 @@
         /**
          * @param string $modelClass
          * @param null $response
-         *
-         * @return ApiModel
+         * @return ApiForm
          */
-        public function getModel($modelClass, $id = null)
+        public function getForm($modelClass, $id = null)
         {
             $attrs = [];
-            $classPieces = explode("\\",$modelClass);
+            $classPieces = explode("\\", $modelClass);
             $class = array_pop($classPieces);
             foreach (Module::$$class as $attr) {
                 $attrs[$attr] = null;
