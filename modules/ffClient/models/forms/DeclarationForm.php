@@ -8,13 +8,11 @@
 
     namespace app\modules\ffClient\models\forms;
 
-    use app\modules\ffClient\models\ApiModel;
-
     /**
      * Class DeclarationForm
      * @package app\modules\ffClient\models\forms
      */
-    class DeclarationForm extends ApiModel
+    class DeclarationForm extends ApiForm
     {
 
     }

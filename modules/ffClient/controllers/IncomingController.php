@@ -147,6 +147,12 @@
             throw new NotFoundHttpException();
         }
 
+        /**
+         * @param $id
+         *
+         * @return string|\yii\web\Response
+         * @throws \yii\web\NotFoundHttpException
+         */
         public function actionDeclarationUpdate($id)
         {
             $filter = $this->getFilter(['id' => $id]);
@@ -179,13 +185,21 @@
             throw new NotFoundHttpException();
         }
 
+        /**
+         * @param $id
+         *
+         * @return string|\yii\web\Response
+         */
         public function actionSpecialRequestCreate($id)
         {
             $model = $this->getModel(SpecialRequestForm::className());
 
-            if ($model->load(\Yii::$app->request->post())) {
+            if ($data = \Yii::$app->request->post('SpecialRequestForm')) {
                 $url = $this->getApiRoute(Module::ROUTE_SPECIAL_REQUEST_CREATE, ['id' => $id]);
-                $response = $this->doRequest($url, $model->getAttributes());
+                $data['relatedId'] = $id;
+                $data['relatedType'] = 'incoming';
+                $response = $this->doRequest($url, $data);
+                $model->setAttributes($data, false);
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
                     return $this->redirect(Url::to(['view', 'id' => $id]));

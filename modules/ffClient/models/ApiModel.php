@@ -8,25 +8,13 @@
 
     namespace app\modules\ffClient\models;
 
-    use app\modules\ffClient\components\ApiErrorBehavior;
     use yii\base\DynamicModel;
 
     /**
      * Class ApiModel
      * @package app\modules\ffClient\models
-     *
-     *
-     * @method checkApiErrors($response)
      */
     class ApiModel extends DynamicModel
     {
-        /**
-         * @inheritdoc
-         */
-        public function behaviors()
-        {
-            return [
-                ApiErrorBehavior::className(),
-            ];
-        }
+
     }

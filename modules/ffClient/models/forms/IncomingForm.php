@@ -8,14 +8,11 @@
 
     namespace app\modules\ffClient\models\forms;
 
-    use app\modules\ffClient\models\ApiModel;
-    use yii\base\DynamicModel;
-
     /**
      * Class IncomingForm
      * @package app\modules\ffClient\models\forms
      */
-    class IncomingForm extends ApiModel
+    class IncomingForm extends ApiForm
     {
 
     }
