@@ -52,7 +52,7 @@
         //        'shipping_label_file',
         //        'store_id',
         'hub_id',
-//        'invoice_paid',
+        //        'invoice_paid',
         //        'invoice_create_time',
         //        'dimensions',
         //        'items_value',
@@ -69,13 +69,21 @@
 
         [
             'class'    => \yii\grid\ActionColumn::className(),
-            'template' => '{view} {update}',
+            'template' => '<nobr>{view}&nbsp;{pay}</nobr>',
             'buttons'  => [
                 'view' => function ($url, $model, $key) {
-                    return Html::a('<i class="glyphicon glyphicon-eye-open"></i>', Url::to(['view', 'id' => $model->id]));
+                    return Html::a('<i class="glyphicon glyphicon-eye-open"></i>',
+                        Url::to(['view', 'id' => $model->id]));
                 },
-                'update' => function ($url, $model, $key) {
-                    return Html::a('<i class="glyphicon glyphicon-pencil"></i>', Url::to(['update', 'id' => $model->id]));
+                'pay'  => function ($url, $model, $key) {
+                    if (!$model->invoice_paid) {
+                        return Html::a('<i class="glyphicon glyphicon-usd"></i>', Url::to(['pay', 'id' => $model->id]),
+                            [
+                                'title' => "Charge payment",
+                            ]);
+                    }
+
+                    return '<span title="Invoice Paid" class="label label-success"><i class="glyphicon glyphicon-usd"></i></span>';
                 },
             ],
         ],

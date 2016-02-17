@@ -12,11 +12,20 @@
 
     class Outgoing extends ApiModel
     {
-        protected static $createRoute = Module::ROUTE_OUTGOING_CREATE;
-        protected static $viewRoute = Module::ROUTE_OUTGOING_VIEW;
-        protected static $indexRoute = Module::ROUTE_OUTGOING_INDEX;
+        const ROUTE_CREATE = Module::ROUTE_OUTGOING_CREATE;
+        const ROUTE_VIEW = Module::ROUTE_OUTGOING_VIEW;
+        const ROUTE_INDEX = Module::ROUTE_OUTGOING_INDEX;
+        const ROUTE_PAY = '/api/outgoing/pay';
 
         protected static $defaultFilter = [
             'expand' => 'declaration, storeInvoice',
         ];
+
+        public function pay()
+        {
+            $url = '/api/outgoing/pay?id='.$this->id;
+            $response = self::doRequest($url, [], "POST");
+
+
+        }
     }

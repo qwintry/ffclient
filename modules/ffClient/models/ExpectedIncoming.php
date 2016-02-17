@@ -12,10 +12,11 @@
 
     class ExpectedIncoming extends ApiModel
     {
-        protected static $indexRoute = Module::ROUTE_EXPECTED_INCOMING_INDEX;
-        protected static $viewRoute = Module::ROUTE_EXPECTED_INCOMING_VIEW;
-        protected static $updateRoute = Module::ROUTE_EXPECTED_INCOMING_UPDATE;
-        protected static $createRoute = Module::ROUTE_EXPECTED_INCOMING_CREATE;
+        const ROUTE_INDEX = Module::ROUTE_EXPECTED_INCOMING_INDEX;
+        const ROUTE_CREATE = Module::ROUTE_EXPECTED_INCOMING_CREATE;
+        const ROUTE_UPDATE = Module::ROUTE_EXPECTED_INCOMING_UPDATE;
+        const ROUTE_VIEW = Module::ROUTE_EXPECTED_INCOMING_VIEW;
+
         protected static $defaultFilter = [
             'expand' => 'specRequests, declaration',
         ];

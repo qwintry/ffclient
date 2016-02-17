@@ -25,12 +25,12 @@
         'received',
         'user_notes',
         'processed',
-        'create_date:datetime',
-        'update_date:datetime',
+        'create_time:datetime',
+        'update_time:datetime',
         [
             'class' => \yii\grid\Column::className(),
             'label' => 'Special Requests',
-            'value' => $model->specRequest,
+            'value' => $model->specRequests,
         ],
         [
             'class' => \yii\grid\Column::className(),

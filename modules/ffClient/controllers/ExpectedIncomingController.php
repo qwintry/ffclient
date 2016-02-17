@@ -41,7 +41,6 @@
         public function actionIndex()
         {
             $expectedIncomings = ExpectedIncoming::findAll();
-
             $provider = new ArrayDataProvider([
                 'models'     => $expectedIncomings,
                 'totalCount' => count($expectedIncomings),
@@ -88,7 +87,7 @@
 
             //render update form
             $expectedIncoming = ExpectedIncoming::findOne(['id' => $id]);
-            $model->setAttributes((array)$expectedIncoming, false);
+            $model->setAttributes($expectedIncoming->getAttributes(), false);
 
             return $this->render('update', [
                 'model' => $model,

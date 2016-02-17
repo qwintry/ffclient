@@ -23,13 +23,12 @@
         /**
          * API routes
          */
-        protected static $indexRoute;
-        protected static $viewRoute;
-        protected static $updateRoute;
-        protected static $createRoute;
-
-        protected static $saveMethod = 'PATCH';
-        protected static $createMethod = 'POST';
+        const ROUTE_INDEX = null;
+        const ROUTE_VIEW = null;
+        const ROUTE_UPDATE = null;
+        const ROUTE_CREATE = null;
+        const METHOD_SAVE = "POST";
+        const METHOD_CREATE = "PATCH";
 
         /**
          * Default filter for API request
@@ -94,13 +93,19 @@
          */
         public static function findAll(array $get = [])
         {
-            if (static::$indexRoute === null) {
-                throw new Exception('Please, specify $indexRoute in '.static::className());
+            if (static::ROUTE_INDEX === null) {
+                throw new Exception('Please, specify ROUTE_INDEX in '.static::className());
             }
             $filter = ArrayHelper::merge(static::$defaultFilter, $get);
-            $url = self::getApiRoute(static::$indexRoute, $filter);
+            $url = self::getApiRoute(static::ROUTE_INDEX, $filter);
 
-            return self::doRequest($url);
+            $response = self::doRequest($url);
+            $models = [];
+            foreach ($response as $item) {
+                $models[] = new static((array)$item);
+            }
+
+            return $models;
         }
 
         /**
@@ -110,13 +115,15 @@
          */
         public static function findOne(array $get = [])
         {
-            if (static::$viewRoute === null) {
-                throw new Exception('Please, specify $viewRoute in '.static::className());
+            if (static::ROUTE_VIEW === null) {
+                throw new Exception('Please, specify ROUTE_VIEW in '.static::className());
             }
             $filter = ArrayHelper::merge(static::$defaultFilter, $get);
-            $url = self::getApiRoute(static::$viewRoute, $filter);
+            $url = self::getApiRoute(static::ROUTE_VIEW, $filter);
 
-            return self::doRequest($url);
+            $response = self::doRequest($url);
+
+            return new static((array)$response);
         }
 
         /**
@@ -127,12 +134,13 @@
          */
         public static function save($id, $data)
         {
-            if (static::$updateRoute === null) {
-                throw new Exception('Please, specify $updateRoute in '.static::className());
+            if (static::ROUTE_UPDATE === null) {
+                throw new Exception('Please, specify ROUTE_UPDATE in '.static::className());
             }
-            $url = self::getApiRoute(static::$updateRoute, ['id' => $id]);
+            $url = self::getApiRoute(static::ROUTE_UPDATE, ['id' => $id]);
+            $response = self::doRequest($url, $data, static::METHOD_SAVE);
 
-            return self::doRequest($url, $data, static::$saveMethod);
+            return new static((array)$response);
         }
 
         /**
@@ -142,11 +150,12 @@
          */
         public static function create($data)
         {
-            if (static::$createRoute === null) {
-                throw new Exception('Please, specify $createRoute in '.static::className());
+            if (static::ROUTE_CREATE === null) {
+                throw new Exception('Please, specify ROUTE_CREATE in '.static::className());
             }
-            $url = self::getApiRoute(static::$createRoute);
+            $url = self::getApiRoute(static::ROUTE_CREATE);
+            $response = self::doRequest($url, $data, static::METHOD_CREATE);
 
-            return self::doRequest($url, $data, static::$createMethod);
+            return new static((array)$response);
         }
     }

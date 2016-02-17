@@ -78,6 +78,10 @@
              * @var User $model
              */
             $model = User::findOne($id);
+            if (null === $model) {
+                throw new NotFoundHttpException("User not found!");
+            }
+
             $model->scenario = \app\modules\ffClient\models\User::SCENARIO_UPDATE;
 
             //get post data
@@ -102,9 +106,18 @@
             ]);
         }
 
+        /**
+         * @param $id
+         *
+         * @return string
+         * @throws \yii\web\HttpException
+         */
         public function actionView($id)
         {
             $model = User::findOne($id);
+            if (null === $model) {
+                throw new NotFoundHttpException("User not found!");
+            }
 
             return $this->render('view', [
                 'model' => $model,

@@ -24,6 +24,9 @@
             'class' => 'btn btn-warning  btn-sm',
         ]) ?>
     </h1>
+<?= \yii\helpers\Html::a('Back', \yii\helpers\Url::to(['/ffClient/incoming/index']), [
+    'class' => 'btn btn-link',
+]) ?>
 <?= DetailView::widget([
     'model'      => $model,
     'attributes' => [
@@ -67,15 +70,37 @@
 <?php endforeach; ?>
 
     <h2>Special Requests:
-        <?= Html::a('Create', \yii\helpers\Url::to(['/ffClient/incoming/special-request-create', 'id' => $model->id]), [
+        <?= Html::a('Create', \yii\helpers\Url::to(['special-request-create', 'id' => $model->id]), [
             'class' => 'btn btn-success btn-sm',
         ]) ?>
     </h2>
 <?= \yii\grid\GridView::widget([
     'dataProvider' => $specialRequestsProvider,
+    'columns'      => [
+        'customer_notes',
+        'type',
+        'status',
+        'notes',
+        'handling:boolean',
+        'charge',
+        [
+            'class'     => \yii\grid\DataColumn::className(),
+            'attribute' => 'authorId',
+            'content'   => function ($model, $key, $index) {
+                if ($model->authorId) {
+                    return Html::a("User #".$model->authorId, Url::to(['user/view', 'id' => $model->authorId]));
+                }
+
+                return null;
+            },
+        ],
+        'hub_id',
+        'create_time:datetime',
+        'update_time:datetime',
+    ],
 ]); ?>
 
 
-<?= \yii\helpers\Html::a('List', \yii\helpers\Url::to(['/ffClient/incoming/index']), [
-    'class' => 'btn btn-default',
+<?= \yii\helpers\Html::a('Back', \yii\helpers\Url::to(['/ffClient/incoming/index']), [
+    'class' => 'btn btn-link',
 ]) ?>

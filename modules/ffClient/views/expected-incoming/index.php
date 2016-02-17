@@ -33,13 +33,13 @@
         'received',
         'user_notes',
         'processed',
-        'create_date:datetime',
-        'update_date:datetime',
+        'create_time:datetime',
+        'update_time:datetime',
         [
             'class' => \yii\grid\Column::className(),
             'header' => 'Special Requests',
             'content' => function ($model, $key, $index, $column) {
-                return count($model->specRequest);
+                return count($model->specRequests);
             },
         ],
         [

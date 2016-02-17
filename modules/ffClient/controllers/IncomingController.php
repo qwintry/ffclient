@@ -112,7 +112,7 @@
 
             //render update form
             $incoming = Incoming::findOne(['id' => $id]);
-            $model->setAttributes((array)$incoming, false);
+            $model->setAttributes($incoming->getAttributes(), false);
 
             return $this->render('update', [
                 'model' => $model,

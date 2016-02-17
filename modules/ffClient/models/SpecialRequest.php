@@ -12,6 +12,6 @@
 
     class SpecialRequest extends ApiModel
     {
-        protected static $createRoute = Module::ROUTE_SPECIAL_REQUEST_CREATE;
-        protected static $createMethod = 'POST';
+        const ROUTE_CREATE = Module::ROUTE_SPECIAL_REQUEST_CREATE;
+        const METHOD_CREATE = 'POST';
     }

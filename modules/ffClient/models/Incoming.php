@@ -12,10 +12,11 @@
 
     class Incoming extends ApiModel
     {
-        protected static $indexRoute = Module::ROUTE_INCOMING_INDEX;
-        protected static $viewRoute = Module::ROUTE_INCOMING_VIEW;
-        protected static $updateRoute = Module::ROUTE_INCOMING_UPDATE;
-        protected static $saveMethod = 'PATCH';
+        const ROUTE_INDEX = Module::ROUTE_INCOMING_INDEX;
+        const ROUTE_UPDATE = Module::ROUTE_INCOMING_UPDATE;
+        const ROUTE_VIEW = Module::ROUTE_INCOMING_VIEW;
+        const METHOD_SAVE = 'PATCH';
+
         protected static $defaultFilter = [
             'expand' => 'specRequests,packageThumbnails,declaration',
         ];

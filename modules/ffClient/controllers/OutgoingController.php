@@ -34,6 +34,7 @@
                                 'create',
                                 'view',
                                 'declaration-update',
+                                'pay',
                             ],
                             'allow'   => true,
                             'roles'   => ['@'],
@@ -68,7 +69,6 @@
         public function actionView($id)
         {
             $outgoing = Outgoing::findOne(['id' => $id]);
-
             $declarationProvider = new ArrayDataProvider([
                 'models'     => $outgoing->declaration,
                 'totalCount' => count($outgoing->declaration),
@@ -107,5 +107,19 @@
                 'model' => $model,
                 'incomings' => $incomings,
             ]);
+        }
+
+        /**
+         * @param $id
+         *
+         * @return \yii\web\Response
+         * @throws \yii\base\Exception
+         */
+        public function actionPay($id)
+        {
+            $outgoing = Outgoing::findOne(['id' => $id]);
+            $outgoing->pay();
+
+            return $this->redirect(Url::to(['view', 'id' => $id]));
         }
     }
