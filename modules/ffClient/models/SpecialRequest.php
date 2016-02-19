@@ -14,4 +14,7 @@
     {
         const ROUTE_CREATE = Module::ROUTE_SPECIAL_REQUEST_CREATE;
         const METHOD_CREATE = 'POST';
+
+        const RELATED_TYPE_INCOMING = 'incoming';
+        const RELATED_TYPE_EXPECTED_INCOMING = 'expectedIncoming';
     }

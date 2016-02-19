@@ -74,13 +74,11 @@
             $incoming = Incoming::findOne(['id' => $id]);
 
             $specialRequestsProvider = new ArrayDataProvider([
-                'models'     => $incoming->specRequests,
-                'totalCount' => count($incoming->specRequests),
+                'allModels'     => $incoming->specRequests
             ]);
 
             $declarationProvider = new ArrayDataProvider([
-                'models'     => $incoming->declaration,
-                'totalCount' => count($incoming->declaration),
+                'allModels'     => $incoming->declaration,
             ]);
 
             return $this->render('view', [
@@ -162,7 +160,7 @@
 
             if ($data = \Yii::$app->request->post('SpecialRequestForm')) {
                 $data['relatedId'] = $id;
-                $data['relatedType'] = 'incoming';
+                $data['relatedType'] = SpecialRequest::RELATED_TYPE_INCOMING;
                 $specialRequest = SpecialRequest::create($data);
                 $model->checkApiErrors($specialRequest);
                 if (!$model->hasErrors()) {

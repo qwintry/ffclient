@@ -10,6 +10,8 @@
 
     use app\modules\ffClient\models\ExpectedIncoming;
     use app\modules\ffClient\models\forms\ExpectedIncomingForm;
+    use app\modules\ffClient\models\forms\SpecialRequestForm;
+    use app\modules\ffClient\models\SpecialRequest;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
     use yii\helpers\ArrayHelper;
@@ -26,7 +28,7 @@
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['index', 'update', 'create', 'view'],
+                            'actions' => ['index', 'update', 'create', 'view', 'special-request-create'],
                             'allow'   => true,
                             'roles'   => ['@'],
                         ],
@@ -42,8 +44,7 @@
         {
             $expectedIncomings = ExpectedIncoming::findAll();
             $provider = new ArrayDataProvider([
-                'models'     => $expectedIncomings,
-                'totalCount' => count($expectedIncomings),
+                'allModels'     => $expectedIncomings,
             ]);
 
             return $this->render('index', [
@@ -60,9 +61,13 @@
         public function actionView($id)
         {
             $expectedIncoming = ExpectedIncoming::findOne(['id' => $id]);
+            $specialRequestsProvider = new ArrayDataProvider([
+                'allModels'     => $expectedIncoming->specRequests,
+            ]);
 
             return $this->render('view', [
                 'model' => $expectedIncoming,
+                'specialRequestsProvider' => $specialRequestsProvider,
             ]);
         }
 
@@ -112,6 +117,31 @@
             }
 
             return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+
+        /**
+         * @param $id
+         *
+         * @return string|\yii\web\Response
+         */
+        public function actionSpecialRequestCreate($id)
+        {
+            $model = $this->getForm(SpecialRequestForm::className());
+
+            if ($data = \Yii::$app->request->post('SpecialRequestForm')) {
+                $data['relatedId'] = $id;
+                $data['relatedType'] = SpecialRequest::RELATED_TYPE_EXPECTED_INCOMING;
+                $specialRequest = SpecialRequest::create($data);
+                $model->checkApiErrors($specialRequest);
+                if (!$model->hasErrors()) {
+                    return $this->redirect(Url::to(['view', 'id' => $id]));
+                }
+                $model->setAttributes($data, false);
+            }
+
+            return $this->render('special-request', [
                 'model' => $model,
             ]);
         }

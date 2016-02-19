@@ -32,7 +32,7 @@
         'hub_id',
         'received',
         'user_notes',
-        'processed',
+        'processed:boolean',
         'create_time:datetime',
         'update_time:datetime',
         [

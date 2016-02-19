@@ -29,33 +29,48 @@
         'status',
         'weight',
         'shop',
-        'user_id',
-        'outgoing_id',
-        'decl_type',
-        'create_time:datetime',
-        'update_time:datetime',
-        'op_notes',
-        'hub_id',
-        'location',
         [
             'class'   => \yii\grid\Column::className(),
-            'header'  => 'Package Img',
+            'header'  => 'User',
             'content' => function ($model, $key, $index) {
-                return count($model->packageThumbnails);
+                if ($model->user_id) {
+                    return Html::a("User #".$model->user_id, Url::to(['user/view-ex', 'id' => $model->user_id]));
+                }
+
+                return null;
             },
         ],
         [
+            'class'   => \yii\grid\Column::className(),
+            'header'  => 'Outgoing',
+            'content' => function ($model, $key, $index) {
+                if ($model->outgoing_id) {
+                    return Html::a("Outgoing #".$model->outgoing_id,
+                        Url::to(['outgoing/view', 'id' => $model->outgoing_id]));
+                }
+
+                return null;
+            },
+        ],
+        'create_time:datetime',
+        'update_time:datetime',
+        'location',
+        [
             'class'    => \yii\grid\ActionColumn::className(),
-            'template' => '{view} {update}',
+            'template' => '{view} {items}',
             'buttons'  => [
-                'view'   => function ($url, $model) {
+                'view'  => function ($url, $model) {
                     return Html::a('<i class="glyphicon glyphicon-eye-open"></i>',
-                        Url::toRoute(['/ffClient/incoming/view', 'id' => $model->id]));
+                        Url::toRoute(['view', 'id' => $model->id]));
                 },
-                'update' => function ($url, $model) {
-                    return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
-                        Url::toRoute(['/ffClient/incoming/update', 'id' => $model->id]));
+                'items' => function ($url, $model) {
+                    return Html::a('<i class="glyphicon glyphicon-list"></i>',
+                        Url::toRoute(['declaration-update', 'id' => $model->id]));
                 },
+                //                'update' => function ($url, $model) {
+                //                    return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
+                //                        Url::toRoute(['/ffClient/incoming/update', 'id' => $model->id]));
+                //                },
             ],
         ],
     ],

@@ -1,5 +1,5 @@
 <?php
-    use app\modules\ffClient\Module;
+    use app\models\User;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
@@ -18,16 +18,46 @@
 <?php
     $form = ActiveForm::begin([
         'id'                     => 'courier-label-form',
-        'options'                => ['class' => 'form-horizontal col-md-8'],
+        'options'                => ['class' => 'form-horizontal'],
         'enableAjaxValidation'   => true,
         'enableClientValidation' => true,
     ]) ?>
 <?= $form->errorSummary($model) ?>
-<?php foreach (Module::$ExpectedIncomingForm as $attribute): ?>
-    <? //TODO:сделать норм?>
-    <?= $form->field($model, $attribute); ?>
-<?php endforeach; ?>
 
+<div class="row"><?= $form->field($model, 'tracking', [
+        'options' => [
+            'class' => 'col-lg-4',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'user_id', [
+        'options' => [
+            'class' => 'col-lg-4',
+        ],
+    ])->dropDownList(User::getList()) ?>
+    <?= $form->field($model, 'shop', [
+        'options' => [
+            'class' => 'col-lg-4',
+        ],
+    ]) ?>
+</div>
+
+<div class="row">
+    <?= $form->field($model, 'user_notes', [
+        'options' => [
+            'class' => 'col-lg-12',
+        ],
+    ])->textarea() ?>
+</div>
+
+<?php if (isset($model->id)): ?>
+    <div class="row">
+        <?= $form->field($model, 'received', [
+            'options' => [
+                'class' => 'col-lg-3',
+            ],
+        ])->checkbox() ?>
+    </div>
+<?php endif; ?>
 <div class="form-group">
     <div class="col-lg-11">
         <?= Html::submitButton(\Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>

@@ -52,8 +52,7 @@
             $outgoings = Outgoing::findAll();
 
             $provider = new ArrayDataProvider([
-                'models'     => $outgoings,
-                'totalCount' => count($outgoings),
+                'allModels'     => $outgoings,
             ]);
 
             return $this->render('index', [
@@ -70,8 +69,7 @@
         {
             $outgoing = Outgoing::findOne(['id' => $id]);
             $declarationProvider = new ArrayDataProvider([
-                'models'     => $outgoing->declaration,
-                'totalCount' => count($outgoing->declaration),
+                'allModels'     => $outgoing->declaration,
             ]);
 
             return $this->render('view', [

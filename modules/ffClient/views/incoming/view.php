@@ -9,7 +9,6 @@
      * @var \yii\data\ArrayDataProvider $specialRequestsProvider
      * @var \yii\data\ArrayDataProvider $declarationProvider
      */
-    use yii\grid\ActionColumn;
     use yii\grid\GridView;
     use yii\helpers\Html;
     use yii\helpers\Url;
@@ -41,7 +40,12 @@
         'op_notes',
         'hub_id',
         'location',
-        'expected_incoming_id',
+        [
+            'attribute' => 'expected_incoming',
+            'format'    => 'raw',
+            'value'     => $model->expected_incoming_id ? Html::a("Expected Incoming #".$model->expected_incoming_id,
+                Url::to(['expected-incoming/view', 'id' => $model->expected_incoming_id])) : null,
+        ],
         'part_number',
     ],
 ]); ?>

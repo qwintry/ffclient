@@ -8,6 +8,7 @@
 
     namespace app\modules\ffClient\models;
 
+    use app\modules\ffClient\components\ApiErrorBehavior;
     use app\modules\ffClient\Module;
     use yii\base\DynamicModel;
     use yii\base\Exception;
@@ -17,6 +18,8 @@
     /**
      * Class ApiModel
      * @package app\modules\ffClient\models
+     *
+     * @method checkApiErrors($response)
      */
     class ApiModel extends DynamicModel
     {
@@ -35,6 +38,16 @@
          * @var array
          */
         protected static $defaultFilter = [];
+
+        /**
+         * @inheritdoc
+         */
+        public function behaviors()
+        {
+            return [
+                ApiErrorBehavior::className(),
+            ];
+        }
 
         /**
          * @param $route
@@ -122,8 +135,11 @@
             $url = self::getApiRoute(static::ROUTE_VIEW, $filter);
 
             $response = self::doRequest($url);
+            if (isset($response->id)) {
+                return new static((array)$response);
+            }
 
-            return new static((array)$response);
+            return $response;
         }
 
         /**
@@ -139,8 +155,11 @@
             }
             $url = self::getApiRoute(static::ROUTE_UPDATE, ['id' => $id]);
             $response = self::doRequest($url, $data, static::METHOD_SAVE);
+            if (isset($response->id)) {
+                return new static((array)$response);
+            }
 
-            return new static((array)$response);
+            return $response;
         }
 
         /**
@@ -155,7 +174,29 @@
             }
             $url = self::getApiRoute(static::ROUTE_CREATE);
             $response = self::doRequest($url, $data, static::METHOD_CREATE);
+            if (isset($response->id)) {
+                return new static((array)$response);
+            }
 
-            return new static((array)$response);
+            return $response;
+        }
+
+        /**
+         * @param $field
+         * @param array $conditions
+         * @param bool $emptyValue
+         *
+         * @return array
+         * @throws \yii\base\Exception
+         */
+        public static function getList($id, $field, array $conditions = [], $emptyValue = true)
+        {
+            $outgoings = self::findAll($conditions);
+            $result = ArrayHelper::map($outgoings, $id, $field);
+            if ($emptyValue) {
+                $result = ArrayHelper::merge([0 => "-"], $result);
+            }
+
+            return $result;
         }
     }

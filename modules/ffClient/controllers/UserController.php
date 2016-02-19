@@ -4,11 +4,8 @@
 
     use app\models\User;
     use yii\data\ActiveDataProvider;
-    use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\VarDumper;
-    use yii\web\HttpException;
+    use yii\helpers\Url;
     use yii\web\NotFoundHttpException;
 
     /**
@@ -28,7 +25,7 @@
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['index', 'update', 'create', 'view'],
+                            'actions' => ['index', 'update', 'create', 'view', 'view-ex'],
                             'allow'   => true,
                             'roles'   => ['@'],
                         ],
@@ -37,6 +34,9 @@
             ];
         }
 
+        /**
+         * @return string
+         */
         public function actionIndex()
         {
             $query = User::find();
@@ -72,6 +72,12 @@
             ]);
         }
 
+        /**
+         * @param $id
+         *
+         * @return string
+         * @throws \yii\web\NotFoundHttpException
+         */
         public function actionUpdate($id)
         {
             /**
@@ -122,5 +128,21 @@
             return $this->render('view', [
                 'model' => $model,
             ]);
+        }
+
+        /**
+         * @param $id
+         *
+         * @return \yii\web\Response
+         * @throws \yii\web\NotFoundHttpException
+         */
+        public function actionViewEx($id)
+        {
+            $user = User::findOne(['ff_id' => $id]);
+            if (null == $user) {
+                throw new NotFoundHttpException('User not found!');
+            }
+
+            return $this->redirect(Url::to(['view', 'id' => $user->id]));
         }
     }

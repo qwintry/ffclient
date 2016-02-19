@@ -9,6 +9,7 @@
     namespace app\modules\ffClient\models;
 
     use app\modules\ffClient\Module;
+    use yii\helpers\ArrayHelper;
 
     class Outgoing extends ApiModel
     {
@@ -24,8 +25,7 @@
         public function pay()
         {
             $url = '/api/outgoing/pay?id='.$this->id;
-            $response = self::doRequest($url, [], "POST");
 
-
+            return self::doRequest($url, [], "POST");
         }
     }

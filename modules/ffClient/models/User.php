@@ -312,4 +312,21 @@
             $this->password_reset_token = null;
         }
 
+        /**
+         * @param bool $externalIds
+         * @param bool $emptyValue
+         *
+         * @return array
+         */
+        public static function getList($externalIds = true, $emptyValue = true)
+        {
+            $id = $externalIds ? 'ff_id' : 'id';
+
+            $result = ArrayHelper::map(self::findAll(['status' => self::STATUS_ACTIVE]), $id, 'username');
+            if ($emptyValue) {
+                $result = ArrayHelper::merge([0 => "-"], $result);
+            }
+
+            return $result;
+        }
     }
