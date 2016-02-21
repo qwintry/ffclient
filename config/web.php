@@ -50,6 +50,11 @@
         'params'     => $params,
     ];
 
+    //merge api connector
+    if(file_exists(__DIR__."/api-connect.php")) {
+        $config  = array_merge($config, require __DIR__."/api-connect.php");
+    }
+
     if (YII_ENV_DEV) {
         // configuration adjustments for 'dev' environment
         $config['bootstrap'][] = 'debug';
