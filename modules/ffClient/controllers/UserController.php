@@ -57,13 +57,18 @@
             $model = new User();
 
             //get post data
-            if ($model->load(\Yii::$app->request->post())) {
+            if ($data = \Yii::$app->request->post('User')) {
                 $route = $this->getApiRoute('user_create');
                 //send data to ff api and check errors
-                $response = $this->doRequest($route, $model->getAttributes());
+                $response = $this->doRequest($route, $data);
+                $model->setAttributes($data, false);
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
-                    $this->redirect(['/ffClient/user/index']);
+                    $model->ff_id = $response->id;
+                    $model->setPassword($data['password']);
+                    $model->generateAuthKey();
+                    $model->save(false);
+                    $this->redirect(['view', 'id' => $model->id]);
                 }
             }
 

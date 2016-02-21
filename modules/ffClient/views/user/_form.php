@@ -27,10 +27,14 @@
         'enableClientValidation' => false,
     ]) ?>
 
+<?= $form->errorSummary($model); ?>
+
 <?= $form->field($model, 'first_name') ?>
 <?= $form->field($model, 'last_name') ?>
 <?= $form->field($model, 'email') ?>
-<?= $form->field($model, 'ff_id') ?>
+<?php if (isset($model->id)): ?>
+    <?= $form->field($model, 'ff_id') ?>
+<?php endif; ?>
 <?= $form->field($model, 'password')->passwordInput() ?>
 
 <div class="form-group">

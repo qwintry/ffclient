@@ -6,7 +6,6 @@
      * Time: 17:21
      *
      * @var \yii\base\DynamicModel $model
-     * @var array $attributes
      */
 ?>
 
@@ -14,5 +13,4 @@
 
 <?= $this->render('_form', [
     'model' => $model,
-    'attributes' => $attributes,
 ])?>
