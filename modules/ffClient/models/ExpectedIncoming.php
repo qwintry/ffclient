@@ -17,6 +17,7 @@
         const ROUTE_UPDATE = Module::ROUTE_EXPECTED_INCOMING_UPDATE;
         const ROUTE_VIEW = Module::ROUTE_EXPECTED_INCOMING_VIEW;
         const METHOD_CREATE = 'POST';
+        const METHOD_SAVE = 'PATCH';
 
         protected static $defaultFilter = [
             'expand' => 'specRequests,declaration',

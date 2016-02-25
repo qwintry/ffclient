@@ -9,7 +9,6 @@
      * @var \app\modules\ffClient\models\ApiModel $newModel
      */
 
-    use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
 
@@ -59,19 +58,37 @@
                 'name'  => 'DeclarationForm['.$i.'][line_value]',
                 'class' => 'form-control',
             ],
+            'template' => '
+                {label}
+                <div class="input-group">
+                    {input}
+                    <span class="input-group-addon">$</span>
+                </div>
+                {error}{hint}
+            ',
             'options' => [
                 'class' => ' col-lg-3'
             ]
         ]) ?>
+
         <?= $form->field($model, 'line_weight', [
             'inputOptions' => [
                 'name'  => 'DeclarationForm['.$i.'][line_weight]',
                 'class' => 'form-control',
             ],
-            'options' => [
-                'class' => ' col-lg-3'
-            ]
-        ]) ?>
+            'template' => '
+                {label}
+                <div class="input-group">
+                    {input}
+                    <span class="input-group-addon">lb</span>
+                </div>
+                {error}{hint}
+            ',
+            'options'  => [
+                'class' => 'col-lg-3',
+            ],
+        ])->textInput(['maxlength' => 5]) ?>
+
         <?= $form->field($model, 'url', [
             'inputOptions' => [
                 'name'  => 'DeclarationForm['.$i.'][url]',

@@ -57,20 +57,36 @@
         'location',
         [
             'class'    => \yii\grid\ActionColumn::className(),
-            'template' => '{view} {items}',
+            'template' => '{view} {update} {declaration} {specRequest}',
             'buttons'  => [
-                'view'  => function ($url, $model) {
+                'view'        => function ($url, $model) {
                     return Html::a('<i class="glyphicon glyphicon-eye-open"></i>',
-                        Url::toRoute(['view', 'id' => $model->id]));
+                        Url::to(['view', 'id' => $model->id]), [
+                            'title' => 'View',
+                        ]);
                 },
-                'items' => function ($url, $model) {
-                    return Html::a('<i class="glyphicon glyphicon-list"></i>',
-                        Url::toRoute(['declaration-update', 'id' => $model->id]));
+                'update'      => function ($url, $model) {
+                    return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
+                        Url::to(['update', 'id' => $model->id]), [
+                            'title' => 'Edit',
+                        ]);
                 },
-                //                'update' => function ($url, $model) {
-                //                    return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
-                //                        Url::toRoute(['/ffClient/incoming/update', 'id' => $model->id]));
-                //                },
+                'specRequest' => function ($url, $model) {
+                    return Html::a('<i class="glyphicon glyphicon-plus-sign"></i>',
+                        Url::to(['special-request-create', 'id' => $model->id], [
+                            'class' => 'btn btn-link',
+                        ]), [
+                            'title' => 'Add special request',
+                        ]);
+                },
+                'declaration' => function ($url, $model) {
+                    return Html::a('<i class="glyphicon glyphicon-list-alt"></i>',
+                        Url::to(['declaration-update', 'id' => $model->id], [
+                            'class' => 'btn btn-link',
+                        ]), [
+                            'title' => 'View declaration',
+                        ]);
+                },
             ],
         ],
     ],

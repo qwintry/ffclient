@@ -43,11 +43,20 @@
             'class' => 'col-lg-3',
         ],
     ]); ?>
+
     <?= $form->field($model, 'weight', [
-        'options' => [
+        'template' => '
+                {label}
+                <div class="input-group">
+                    {input}
+                    <span class="input-group-addon">lb</span>
+                </div>
+                {error}{hint}
+            ',
+        'options'  => [
             'class' => 'col-lg-3',
         ],
-    ]); ?>
+    ])->textInput(['maxlength' => 5]) ?>
 </div>
 
 <div class="row">
@@ -73,17 +82,17 @@
         'options' => [
             'class' => 'col-lg-4',
         ],
-    ]); ?>
+    ])->textInput(['readonly' => true]); ?>
     <?= $form->field($model, 'op_notes', [
         'options' => [
             'class' => 'col-lg-4',
         ],
-    ]); ?>
+    ])->textInput(['readonly' => true]); ?>
     <?= $form->field($model, 'hub_id', [
-        'options' => [
+        'options'      => [
             'class' => 'col-lg-4',
         ],
-    ]); ?>
+    ])->textInput(['readonly' => true]); ?>
 </div>
 
 <div class="row">

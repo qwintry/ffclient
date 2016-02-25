@@ -8,19 +8,48 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\modules\ffClient\components\DeclarationUpdateAction;
+    use app\modules\ffClient\components\SpecialRequestCreateAction;
     use app\modules\ffClient\models\ExpectedIncoming;
     use app\modules\ffClient\models\forms\ExpectedIncomingForm;
     use app\modules\ffClient\models\forms\SpecialRequestForm;
     use app\modules\ffClient\models\SpecialRequest;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
-    use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
-    use yii\helpers\VarDumper;
-    use yii\web\NotFoundHttpException;
 
     class ExpectedIncomingController extends BaseController
     {
+        /**
+         * @var string
+         */
+        public $incomingModel = 'app\modules\ffClient\models\ExpectedIncoming';
+        /**
+         * @var string
+         */
+        public $relatedTypeIncoming;
+
+        public function init()
+        {
+            parent::init();
+
+            $this->relatedTypeIncoming = SpecialRequest::RELATED_TYPE_EXPECTED_INCOMING;
+        }
+
+        /**
+         * @return array
+         */
+        public function actions()
+        {
+            return [
+                'declaration-update'     => DeclarationUpdateAction::className(),
+                'special-request-create' => SpecialRequestCreateAction::className(),
+            ];
+        }
+
+        /**
+         * @return array
+         */
         public function behaviors()
         {
             return [
@@ -28,7 +57,14 @@
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['index', 'update', 'create', 'view', 'special-request-create'],
+                            'actions' => [
+                                'index',
+                                'update',
+                                'create',
+                                'view',
+                                'declaration-update',
+                                'special-request-create',
+                            ],
                             'allow'   => true,
                             'roles'   => ['@'],
                         ],
@@ -44,7 +80,7 @@
         {
             $expectedIncomings = ExpectedIncoming::findAll();
             $provider = new ArrayDataProvider([
-                'allModels'     => $expectedIncomings,
+                'allModels' => $expectedIncomings,
             ]);
 
             return $this->render('index', [
@@ -62,12 +98,16 @@
         {
             $expectedIncoming = ExpectedIncoming::findOne(['id' => $id]);
             $specialRequestsProvider = new ArrayDataProvider([
-                'allModels'     => $expectedIncoming->specRequests,
+                'allModels' => $expectedIncoming->specRequests,
+            ]);
+            $declarationProvider = new ArrayDataProvider([
+                'allModels' => $expectedIncoming->declaration,
             ]);
 
             return $this->render('view', [
-                'model' => $expectedIncoming,
+                'model'                   => $expectedIncoming,
                 'specialRequestsProvider' => $specialRequestsProvider,
+                'declarationProvider'     => $declarationProvider,
             ]);
         }
 

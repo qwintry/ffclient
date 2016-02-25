@@ -26,40 +26,54 @@
     'columns'      => [
         'id',
         'tracking',
-        'user_id',
+        [
+            'class'   => \yii\grid\Column::className(),
+            'header'  => 'User',
+            'content' => function ($model, $key, $index) {
+                if ($model->user_id) {
+                    return Html::a("User #".$model->user_id, Url::to(['user/view-ex', 'id' => $model->user_id]));
+                }
+
+                return null;
+            },
+        ],
         'shop',
         'decl_type',
-        'hub_id',
-        'received',
-        'user_notes',
+        'received:boolean',
         'processed:boolean',
         'create_time:datetime',
         'update_time:datetime',
         [
-            'class' => \yii\grid\Column::className(),
-            'header' => 'Special Requests',
-            'content' => function ($model, $key, $index, $column) {
-                return count($model->specRequests);
-            },
-        ],
-        [
-            'class' => \yii\grid\Column::className(),
-            'header' => 'Declarations',
-            'content' => function ($model, $key, $index, $column) {
-                return count($model->declaration);
-            },
-        ],
-        [
             'class'    => \yii\grid\ActionColumn::className(),
-            'template' => '{view} {update}',
+            'template' => '{view} {update} {declaration} {specRequest}',
             'buttons'  => [
-                'view'   => function ($url, $model) {
+                'view'        => function ($url, $model) {
                     return Html::a('<i class="glyphicon glyphicon-eye-open"></i>',
-                        Url::toRoute(['/ffClient/expected-incoming/view', 'id' => $model->id]));
+                        Url::to(['view', 'id' => $model->id]), [
+                            'title' => 'View',
+                        ]);
                 },
-                'update' => function ($url, $model) {
+                'update'      => function ($url, $model) {
                     return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
-                        Url::toRoute(['/ffClient/expected-incoming/update', 'id' => $model->id]));
+                        Url::to(['update', 'id' => $model->id]), [
+                            'title' => 'Edit',
+                        ]);
+                },
+                'specRequest' => function ($url, $model) {
+                    return Html::a('<i class="glyphicon glyphicon-plus-sign"></i>',
+                        Url::to(['special-request-create', 'id' => $model->id], [
+                            'class' => 'btn btn-link',
+                        ]), [
+                            'title' => 'Add special request',
+                        ]);
+                },
+                'declaration' => function ($url, $model) {
+                    return Html::a('<i class="glyphicon glyphicon-list-alt"></i>',
+                        Url::to(['declaration-update', 'id' => $model->id], [
+                            'class' => 'btn btn-link',
+                        ]), [
+                            'title' => 'View declaration',
+                        ]);
                 },
             ],
         ],

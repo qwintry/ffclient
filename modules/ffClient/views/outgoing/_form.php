@@ -1,5 +1,4 @@
 <?php
-    use app\modules\ffClient\Module;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
@@ -15,27 +14,264 @@
      * @var array $incomings
      */
 
-    $attributes = Module::$OutgoingForm;
+    //    $attributes = Module::$OutgoingForm;
+    //    var_dump($attributes);
 ?>
 
 <?php
     $form = ActiveForm::begin([
         'id'                     => 'courier-label-form',
-        'options'                => ['class' => 'form-horizontal col-md-8'],
+        'options'                => ['class' => 'form-horizontal'],
         'enableAjaxValidation'   => true,
         'enableClientValidation' => true,
     ]) ?>
 
 <?= $form->errorSummary($model); ?>
+<div class="row">
+    <?= $form->field($model, 'incomingSelected', [
+        'options' => [
+            'class' => 'col-lg-12',
+        ],
+    ])->checkboxList($incomings); ?>
+</div>
+<div class="row">
+    <?= $form->field($model, 'tracking', [
+        'options' => [
+            'class' => 'col-lg-2',
+        ],
+    ]); ?>
+    <?= $form->field($model, 'weight', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">lb</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ])->textInput(['maxlength' => 5]) ?>
 
-<?= $form->field($model, 'incomingSelected')->checkboxList($incomings); ?>
+    <?= $form->field($model, 'status', [
+        'options' => [
+            'class' => 'col-lg-2',
+        ],
+    ]); ?>
+    <?= $form->field($model, 'type', [
+        'options' => [
+            'class' => 'col-lg-2',
+        ],
+    ]); ?>
+    <?= $form->field($model, 'method', [
+        'options' => [
+            'class' => 'col-lg-2',
+        ],
+    ]); ?>
+</div>
+<div class="row">
+    <?= $form->field($model, 'remove_invoices', [
+        'options' => [
+            'class' => 'col-lg-2',
+        ],
+    ])->checkbox(); ?>
 
-<?php foreach ($attributes as $attribute): ?>
-    <? //TODO:сделать норм?>
-    <?php if ('incomingSelected' != $attribute): ?>
-        <?= $form->field($model, $attribute); ?>
-    <?php endif; ?>
-<?php endforeach; ?>
+    <?= $form->field($model, 'security_tape', [
+        'options' => [
+            'class' => 'col-lg-2',
+        ],
+    ])->checkbox(); ?>
+
+    <?= $form->field($model, 'insurance', [
+        'options' => [
+            'class' => 'col-lg-2',
+        ],
+    ])->checkbox(); ?>
+</div>
+
+<div class="row">
+    <?= $form->field($model, 'user_notes', [
+        'options' => [
+            'class' => 'col-lg-6',
+        ],
+    ])->textarea(['rows' => 3]); ?>
+    <?= $form->field($model, 'operator_notes', [
+        'options' => [
+            'class' => 'col-lg-6',
+        ],
+    ])->textarea(['rows' => 3]); ?>
+</div>
+
+<div class="row">
+    <?= $form->field($model, 'invoice_packing', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_materials', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_shipping', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_insurance', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_consolidation', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'shipping_retail_cost', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+</div>
+
+<div class="row">
+    <?= $form->field($model, 'invoice_spec_requests', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_storage', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_security_tape', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_other', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+    <?= $form->field($model, 'invoice_total', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-2',
+        ],
+    ]) ?>
+</div>
+
+<div class="row">
+    <?= $form->field($model, 'dimensions', [
+        'options' => [
+            'class' => 'col-lg-4',
+        ],
+    ]); ?>
+    <?= $form->field($model, 'items_value', [
+        'template' => '
+        {label}
+        <div class="input-group">
+            {input}
+            <span class="input-group-addon">$</span>
+        </div>
+        {error}{hint}
+        ',
+        'options'  => [
+            'class' => 'col-lg-4',
+        ],
+    ]) ?>
+</div>
 
 <div class="form-group">
     <div class="col-lg-11">

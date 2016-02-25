@@ -35,11 +35,24 @@
         'processed',
         'create_time:datetime',
         'update_time:datetime',
-        //        [
-        //            'class' => \yii\grid\Column::className(),
-        //            'label' => 'Declarations',
-        //            'value' => count($model->declaration),
-        //        ],
+    ],
+]); ?>
+
+    <h2>Items in declaration:
+        <?= Html::a('Edit', \yii\helpers\Url::to(['declaration-update', 'id' => $model->id]), [
+            'class' => 'btn btn-warning btn-sm',
+        ]) ?>
+    </h2>
+<?= \yii\grid\GridView::widget([
+    'dataProvider' => $declarationProvider,
+    'columns'      => [
+        'id',
+        'descr',
+        'descr_ru',
+        'line_value',
+        'line_weight',
+        'url',
+        'qty',
     ],
 ]); ?>
 
@@ -76,7 +89,4 @@
 
 <?= \yii\helpers\Html::a('List', \yii\helpers\Url::to(['/ffClient/expected-incoming/index']), [
     'class' => 'btn btn-default',
-]) ?>
-<?= \yii\helpers\Html::a('Update', \yii\helpers\Url::to(['/ffClient/expected-incoming/update', 'id' => $model->id]), [
-    'class' => 'btn btn-warning',
 ]) ?>

@@ -15,8 +15,6 @@
     use yii\filters\AccessControl;
     use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
-    use yii\helpers\VarDumper;
-    use yii\web\NotFoundHttpException;
 
     class OutgoingController extends BaseController
     {
@@ -52,7 +50,7 @@
             $outgoings = Outgoing::findAll();
 
             $provider = new ArrayDataProvider([
-                'allModels'     => $outgoings,
+                'allModels' => $outgoings,
             ]);
 
             return $this->render('index', [
@@ -69,7 +67,7 @@
         {
             $outgoing = Outgoing::findOne(['id' => $id]);
             $declarationProvider = new ArrayDataProvider([
-                'allModels'     => $outgoing->declaration,
+                'allModels' => $outgoing->declaration,
             ]);
 
             return $this->render('view', [
@@ -84,12 +82,13 @@
         public function actionCreate()
         {
             $model = $this->getForm(OutgoingForm::className());
-            if($incomings = Incoming::findAll()) {
-                $incomings = ArrayHelper::map($incomings, 'id', 'tracking');
+            if ($incomings = Incoming::findAll()) {
+                $incomings = ArrayHelper::map($incomings, 'id', function ($item) {
+                    return "#".$item['id']." ".$item['tracking'];
+                });
             } else {
                 $incomings = [];
             }
-
 
             if ($data = \Yii::$app->request->post('OutgoingForm')) {
                 if ($outgoing = Outgoing::create($data)) {
@@ -102,7 +101,7 @@
             }
 
             return $this->render('create', [
-                'model' => $model,
+                'model'     => $model,
                 'incomings' => $incomings,
             ]);
         }
