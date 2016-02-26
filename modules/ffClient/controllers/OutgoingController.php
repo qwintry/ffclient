@@ -8,6 +8,7 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\modules\ffClient\models\File;
     use app\modules\ffClient\models\forms\OutgoingForm;
     use app\modules\ffClient\models\Incoming;
     use app\modules\ffClient\models\Outgoing;
@@ -91,6 +92,18 @@
             }
 
             if ($data = \Yii::$app->request->post('OutgoingForm')) {
+                /**
+                 * @var File[] $files
+                 */
+                $files = File::getInstances($model, 'passportFiles');
+                foreach ($files as $file) {
+                    $file->upload();
+                    $data['address']['passportFiles'][] = [
+                        'base64Data'      => $file->getBase64Encoded(),
+                        'base64Extension' => $file->getExtension(),
+                    ];
+                    $file->delete();
+                }
                 if ($outgoing = Outgoing::create($data)) {
                     $model->checkApiErrors($outgoing);
                     if (!$model->hasErrors()) {
@@ -98,6 +111,7 @@
                     }
                 }
                 $model->setAttributes($data, false);
+                $model->address = $data['address'];
             }
 
             return $this->render('create', [

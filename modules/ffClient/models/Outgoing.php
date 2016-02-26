@@ -17,7 +17,7 @@
         const ROUTE_VIEW = Module::ROUTE_OUTGOING_VIEW;
         const ROUTE_INDEX = Module::ROUTE_OUTGOING_INDEX;
         const ROUTE_PAY = '/api/outgoing/pay';
-        const METHOD_CREATE = 'POST';
+        const METHOD_CREATE = "POST";
 
         protected static $defaultFilter = [
             'expand' => 'declaration, storeInvoice',

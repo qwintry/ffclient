@@ -18,11 +18,7 @@
     $this->title = $title;
 ?>
 
-    <h1>Incoming: <?= $title ?> #<?= $model->id ?>
-        <?= Html::a('Edit', \yii\helpers\Url::to(['/ffClient/incoming/update', 'id' => $model->id]), [
-            'class' => 'btn btn-warning  btn-sm',
-        ]) ?>
-    </h1>
+    <h1>Incoming: <?= $title ?> #<?= $model->id ?></h1>
 <?= \yii\helpers\Html::a('Back', \yii\helpers\Url::to(['/ffClient/incoming/index']), [
     'class' => 'btn btn-link',
 ]) ?>

@@ -118,27 +118,27 @@
          * @return string
          * @throws \yii\web\NotFoundHttpException
          */
-        public function actionUpdate($id)
-        {
-            $model = $this->getForm(IncomingForm::className(), $id);
-
-            //saving data
-            if ($data = \Yii::$app->request->post('IncomingForm')) {
-                if ($incoming = Incoming::save($id, $data)) {
-                    $model->checkApiErrors($incoming);
-                    if (!$model->hasErrors()) {
-                        return $this->redirect(Url::to(['view', 'id' => $model->id]));
-                    }
-                }
-            }
-
-            //render update form
-            $incoming = Incoming::findOne(['id' => $id]);
-            $model->setAttributes($incoming->getAttributes(), false);
-
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+//        public function actionUpdate($id)
+//        {
+//            $model = $this->getForm(IncomingForm::className(), $id);
+//
+//            //saving data
+//            if ($data = \Yii::$app->request->post('IncomingForm')) {
+//                if ($incoming = Incoming::save($id, $data)) {
+//                    $model->checkApiErrors($incoming);
+//                    if (!$model->hasErrors()) {
+//                        return $this->redirect(Url::to(['view', 'id' => $model->id]));
+//                    }
+//                }
+//            }
+//
+//            //render update form
+//            $incoming = Incoming::findOne(['id' => $id]);
+//            $model->setAttributes($incoming->getAttributes(), false);
+//
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
+//        }
 
     }

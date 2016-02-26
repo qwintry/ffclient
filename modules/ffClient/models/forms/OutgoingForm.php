@@ -10,5 +10,19 @@
 
     class OutgoingForm extends ApiForm
     {
+        public $address;
+        public $passportFiles;
 
+        public function rules()
+        {
+            return [
+                [
+                    ['passportFiles'],
+                    'file',
+                    'skipOnEmpty' => false,
+                    'extensions'  => 'png, jpg, pdf, jpeg, bmp',
+                    'maxFiles'    => 10,
+                ],
+            ];
+        }
     }
