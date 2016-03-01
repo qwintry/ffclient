@@ -45,12 +45,7 @@
             'options' => [
                 'class' => 'col-lg-3',
             ],
-        ])->dropDownList([
-            'express'  => 'USPS Express',
-            'priority' => 'USPS Priority',
-            'ecopost'  => 'Qwintry Ecopost',
-            'qwair'    => 'Qwintry Air',
-        ]) ?>
+        ])->dropDownList(Yii::$app->ffReference->deliveryMethods()) ?>
     </div>
 </fieldset>
 
@@ -96,7 +91,7 @@
             'options' => [
                 'class' => 'col-lg-4',
             ],
-        ])->label('Country') ?>
+        ])->label('Country')->dropDownList(Yii::$app->ffReference->countriesList()) ?>
         <?= $form->field($model, 'address[city]', [
             'options' => [
                 'class' => 'col-lg-4',

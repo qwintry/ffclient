@@ -104,6 +104,9 @@
                     ];
                     $file->delete();
                 }
+
+                $data['user_id'] = \Yii::$app->user->getIdentity()->ff_id;
+
                 if ($outgoing = Outgoing::create($data)) {
                     $model->checkApiErrors($outgoing);
                     if (!$model->hasErrors()) {

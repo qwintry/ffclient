@@ -19,7 +19,7 @@
                 [
                     ['passportFiles'],
                     'file',
-                    'skipOnEmpty' => false,
+                    'skipOnEmpty' => true,
                     'extensions'  => 'png, jpg, pdf, jpeg, bmp',
                     'maxFiles'    => 10,
                 ],

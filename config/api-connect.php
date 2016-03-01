@@ -9,10 +9,13 @@
      */
 
     return [
-        'modules' => [
+        'bootstrap' => [
+            'ffClient',
+        ],
+        'modules'   => [
             'ffClient' => [
                 'class'   => 'app\modules\ffClient\Module',
-                'apiKey'  => 'W-072qI4h5iCTQ_MwfcGI0T4RcU1zOYF',
+                'apiKey'  => 'vvr7j9cNMaQ7njaYWf_avFWwZL4ql6ES',
                 'siteUrl' => 'http://ff.qwintry.loc',
             ],
         ],

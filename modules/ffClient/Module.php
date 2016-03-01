@@ -2,7 +2,9 @@
 
     namespace app\modules\ffClient;
 
+    use app\modules\ffClient\components\Reference;
     use yii\helpers\ArrayHelper;
+    use yii\helpers\Json;
 
     class Module extends \yii\base\Module
     {
@@ -166,13 +168,15 @@
             'deliveryType',
             'deliveryPickup',
             'storeInvoice',
-            'incomingSelected'
+            'incomingSelected',
         ];
 
         public function init()
         {
             parent::init();
-            // custom initialization code goes here
+
+            \Yii::$app->setComponents(ArrayHelper::merge(\Yii::$app->getComponents(),
+                ['ffReference' => ['class' => Reference::className()]]));
         }
 
         /**
@@ -193,7 +197,7 @@
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$this->apiKey));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Bearer '.$this->apiKey]);
 
             if ($method) {
                 if ($method == "POST") {
@@ -218,7 +222,7 @@
             $response = curl_exec($ch);
             curl_close($ch);
 
-            return json_decode($response);
+            return Json::decode($response);
         }
 
         /**
