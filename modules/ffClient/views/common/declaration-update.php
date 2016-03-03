@@ -5,8 +5,9 @@
      * Date: 10.02.2016
      * Time: 12:08
      *
-     * @var \app\modules\ffClient\models\ApiModel[] $models
-     * @var \app\modules\ffClient\models\ApiModel $newModel
+     * @var \app\modules\ffClient\models\ApiModel[] $items
+     * @var \app\modules\ffClient\models\ApiModel $model
+     * @var \yii\web\View $this
      */
 
     use yii\helpers\Html;
@@ -25,40 +26,59 @@
     ]);
 ?>
 
-<?php $i = 0; ?>
-<?php foreach ($models as $model): ?>
-    <?php if (isset($model->id)): ?>
-        <h3>Edit item #<?= $model->id ?></h3>
-    <?php else: ?>
-        <h3>Add new item</h3>
-    <?php endif; ?>
-    <div class="row">
-        <?= $form->field($model, 'descr', [
-            'inputOptions' => [
-                'name'  => 'DeclarationForm['.$i.'][descr]',
-                'class' => 'form-control',
-            ],
-            'options' => [
-                'class' => ' col-lg-6'
-            ]
-        ])->textarea() ?>
-        <?= $form->field($model, 'descr_ru', [
-            'inputOptions' => [
-                'name'  => 'DeclarationForm['.$i.'][descr_ru]',
-                'class' => 'form-control',
-            ],
-            'options' => [
-                'class' => ' col-lg-6'
-            ]
-        ])->textarea() ?>
-    </div>
-    <div class="row">
-        <?= $form->field($model, 'line_value', [
-            'inputOptions' => [
-                'name'  => 'DeclarationForm['.$i.'][line_value]',
-                'class' => 'form-control',
-            ],
-            'template' => '
+
+<div class="row">
+    <?= $form->field($model, 'declMethod', [
+        'options' => [
+            'class' => 'col-lg-3',
+        ],
+    ])->dropDownList(Yii::$app->getModule('ffClient')->reference->declMethods()) ?>
+    <?= $form->field($model, 'country', [
+        'options' => [
+            'class' => 'col-lg-3',
+        ],
+    ])->dropDownList(Yii::$app->getModule('ffClient')->reference->countriesList()) ?>
+</div>
+
+<?php foreach ($items as $i => $item): ?>
+    <div class="item_holder">
+        <?php if (isset($item->id)): ?>
+            <h3>Edit item #<?= $item['id'] ?>
+                <?= Html::a('Delete', '#', [
+                    'class'   => 'btn btn-danger btn-sm',
+                    'onclick' => 'Items.delete($(this))',
+                ]); ?>
+            </h3>
+        <?php else: ?>
+            <h3>Add new item</h3>
+        <?php endif; ?>
+        <div class="row">
+            <?= $form->field($item, 'descr', [
+                'inputOptions' => [
+                    'name'  => 'DeclarationForm['.$i.'][descr]',
+                    'class' => 'form-control',
+                ],
+                'options'      => [
+                    'class' => ' col-lg-6',
+                ],
+            ])->textarea() ?>
+            <?= $form->field($item, 'descrLocal', [
+                'inputOptions' => [
+                    'name'  => 'DeclarationForm['.$i.'][descrLocal]',
+                    'class' => 'form-control',
+                ],
+                'options'      => [
+                    'class' => ' col-lg-6',
+                ],
+            ])->textarea() ?>
+        </div>
+        <div class="row">
+            <?= $form->field($item, 'totalValue', [
+                'inputOptions' => [
+                    'name'  => 'DeclarationForm['.$i.'][totalValue]',
+                    'class' => 'form-control',
+                ],
+                'template'     => '
                 {label}
                 <div class="input-group">
                     {input}
@@ -66,17 +86,17 @@
                 </div>
                 {error}{hint}
             ',
-            'options' => [
-                'class' => ' col-lg-3'
-            ]
-        ]) ?>
+                'options'      => [
+                    'class' => ' col-lg-3',
+                ],
+            ]) ?>
 
-        <?= $form->field($model, 'line_weight', [
-            'inputOptions' => [
-                'name'  => 'DeclarationForm['.$i.'][line_weight]',
-                'class' => 'form-control',
-            ],
-            'template' => '
+            <?= $form->field($item, 'totalWeight', [
+                'inputOptions' => [
+                    'name'  => 'DeclarationForm['.$i.'][totalWeight]',
+                    'class' => 'form-control',
+                ],
+                'template'     => '
                 {label}
                 <div class="input-group">
                     {input}
@@ -84,41 +104,53 @@
                 </div>
                 {error}{hint}
             ',
-            'options'  => [
-                'class' => 'col-lg-3',
-            ],
-        ])->textInput(['maxlength' => 5]) ?>
+                'options'      => [
+                    'class' => 'col-lg-3',
+                ],
+            ])->textInput(['maxlength' => 5]) ?>
 
-        <?= $form->field($model, 'url', [
-            'inputOptions' => [
-                'name'  => 'DeclarationForm['.$i.'][url]',
-                'class' => 'form-control',
-            ],
-            'options' => [
-                'class' => ' col-lg-3'
-            ]
-        ]) ?>
+            <?= $form->field($item, 'url', [
+                'inputOptions' => [
+                    'name'  => 'DeclarationForm['.$i.'][url]',
+                    'class' => 'form-control',
+                ],
+                'options'      => [
+                    'class' => ' col-lg-3',
+                ],
+            ]) ?>
 
-        <?= $form->field($model, 'qty', [
-            'inputOptions' => [
-                'name'  => 'DeclarationForm['.$i.'][qty]',
-                'class' => 'form-control',
-            ],
-            'options' => [
-                'class' => ' col-lg-3'
-            ]
-        ]) ?>
+            <?= $form->field($item, 'quantity', [
+                'inputOptions' => [
+                    'name'  => 'DeclarationForm['.$i.'][quantity]',
+                    'class' => 'form-control',
+                ],
+                'options'      => [
+                    'class' => ' col-lg-3',
+                ],
+            ]) ?>
+        </div>
+        <hr>
     </div>
-    <?php $i++; ?>
-    <hr>
 <?php endforeach; ?>
 
 <div class="form-group">
     <div class="col-lg-11">
-        <?= Html::submitButton(\Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>
-        <?= \yii\helpers\Html::a('Cancel', \yii\helpers\Url::to(['/ffClient/incoming/index']), [
+        <?= Html::submitButton(\Yii::t('app', 'Save'), ['class' => 'btn btn-primary']) ?>
+        <?= \yii\helpers\Html::a(\Yii::t('app', 'Cancel'), \yii\helpers\Url::to(['index']), [
             'class' => 'btn btn-link',
         ]) ?>
     </div>
 </div>
 <?php ActiveForm::end() ?>
+
+<?php $this->registerJs('
+
+    var Items = {
+        itemHolderSelector: ".item_holder",
+        delete: function($item) {
+            $item.closest(this.itemHolderSelector).hide().remove();
+            return false;
+        },
+    };
+
+', \yii\web\View::POS_END, "items-management") ?>

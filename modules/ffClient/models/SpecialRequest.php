@@ -16,5 +16,5 @@
         const METHOD_CREATE = 'POST';
 
         const RELATED_TYPE_INCOMING = 'incoming';
-        const RELATED_TYPE_EXPECTED_INCOMING = 'expectedIncoming';
+        const RELATED_TYPE_EXPECTED_INCOMING = 'expected_incoming';
     }

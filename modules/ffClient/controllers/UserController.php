@@ -64,7 +64,7 @@
                 $model->setAttributes($data, false);
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
-                    $model->ff_id = $response->id;
+                    $model->ff_id = $response['id'];
                     $model->setPassword($data['password']);
                     $model->generateAuthKey();
                     $model->save(false);
@@ -97,12 +97,10 @@
 
             //get post data
             if ($model->load(\Yii::$app->request->post())) {
-
-                $route = $this->getApiRoute('user_update');
-                $params = http_build_query([
-                    'id' => $id,
-                ]);
-                $url = $route."?".$params;
+                $params = [
+                    'id' => $model->ff_id,
+                ];
+                $url = $this->getApiRoute('user_update', $params);
                 //send data to ff api and check errors
                 $response = $this->doRequest($url, $model->getAttributes(), 'PATCH');
                 $model->checkApiErrors($response);

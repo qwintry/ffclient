@@ -38,7 +38,6 @@
             },
         ],
         'shop',
-        'decl_type',
         'received:boolean',
         'processed:boolean',
         'create_time:datetime',

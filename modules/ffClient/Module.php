@@ -70,11 +70,12 @@
             'tracking',
             'user_id',
             'shop',
-            'decl_type',
             'hub_id',
             'received',
             'user_notes',
             'processed',
+            'declMethod',
+            'country',
         ];
 
         /**
@@ -94,6 +95,8 @@
             'location',
             'expected_incoming_id',
             'part_number',
+            'declMethod',
+            'country',
         ];
 
         /**
@@ -102,11 +105,11 @@
          */
         public static $DeclarationForm = [
             'descr',
-            'descr_ru',
-            'line_value',
-            'line_weight',
+            'descrLocal',
+            'totalValue',
+            'totalWeight',
             'url',
-            'qty',
+            'quantity',
         ];
 
         /**
@@ -175,8 +178,11 @@
         {
             parent::init();
 
-            \Yii::$app->setComponents(ArrayHelper::merge(\Yii::$app->getComponents(),
-                ['ffReference' => ['class' => Reference::className()]]));
+            $this->setComponents([
+                'reference' => [
+                    'class' => Reference::className(),
+                ],
+            ]);
         }
 
         /**

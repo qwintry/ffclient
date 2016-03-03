@@ -45,7 +45,7 @@
             'options' => [
                 'class' => 'col-lg-3',
             ],
-        ])->dropDownList(Yii::$app->ffReference->deliveryMethods()) ?>
+        ])->dropDownList(Yii::$app->getModule('ffClient')->reference->deliveryMethods()) ?>
     </div>
 </fieldset>
 
@@ -91,7 +91,7 @@
             'options' => [
                 'class' => 'col-lg-4',
             ],
-        ])->label('Country')->dropDownList(Yii::$app->ffReference->countriesList()) ?>
+        ])->label('Country')->dropDownList(Yii::$app->getModule('ffClient')->reference->countriesList()) ?>
         <?= $form->field($model, 'address[city]', [
             'options' => [
                 'class' => 'col-lg-4',

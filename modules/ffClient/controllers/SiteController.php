@@ -17,7 +17,7 @@
     use yii\web\BadRequestHttpException;
     use yii\web\Controller;
 
-    class SiteController extends Controller
+    class SiteController extends BaseController
     {
 
         /**
@@ -29,14 +29,10 @@
         {
             $model = new SignupForm();
             if ($model->load(\Yii::$app->request->post())) {
-                /**
-                 * @var Module $client
-                 */
                 //try to create user in ff
-                $client = \Yii::$app->getModule('ffClient');
-                $route = $client->getApiRoute('user_create');
+                $route = $this->getApiRoute(Module::ROUTE_USER_CREATE);
                 //send data to ff api and check errors
-                $response = $client->doRequest($route, $model->getAttributes());
+                $response = $this->doRequest($route, $model->getAttributes());
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
                     $model->ff_id = ArrayHelper::getValue($response, 'id');

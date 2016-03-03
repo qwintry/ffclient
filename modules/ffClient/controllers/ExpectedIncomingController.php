@@ -23,7 +23,11 @@
         /**
          * @var string
          */
-        public $incomingModel = 'app\modules\ffClient\models\ExpectedIncoming';
+        public $incomingModelClass = 'app\modules\ffClient\models\ExpectedIncoming';
+        /**
+         * @var string
+         */
+        public $incomingFormClass = 'app\modules\ffClient\models\forms\ExpectedIncomingForm';
         /**
          * @var string
          */
@@ -101,7 +105,7 @@
                 'allModels' => $expectedIncoming->specRequests,
             ]);
             $declarationProvider = new ArrayDataProvider([
-                'allModels' => $expectedIncoming->declaration,
+                'allModels' => $expectedIncoming->items,
             ]);
 
             return $this->render('view', [
@@ -157,31 +161,6 @@
             }
 
             return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-
-        /**
-         * @param $id
-         *
-         * @return string|\yii\web\Response
-         */
-        public function actionSpecialRequestCreate($id)
-        {
-            $model = $this->getForm(SpecialRequestForm::className());
-
-            if ($data = \Yii::$app->request->post('SpecialRequestForm')) {
-                $data['relatedId'] = $id;
-                $data['relatedType'] = SpecialRequest::RELATED_TYPE_EXPECTED_INCOMING;
-                $specialRequest = SpecialRequest::create($data);
-                $model->checkApiErrors($specialRequest);
-                if (!$model->hasErrors()) {
-                    return $this->redirect(Url::to(['view', 'id' => $id]));
-                }
-                $model->setAttributes($data, false);
-            }
-
-            return $this->render('special-request', [
                 'model' => $model,
             ]);
         }

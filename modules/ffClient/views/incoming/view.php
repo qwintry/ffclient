@@ -8,8 +8,8 @@
      * @var stdClass $model
      * @var \yii\data\ArrayDataProvider $specialRequestsProvider
      * @var \yii\data\ArrayDataProvider $declarationProvider
+     * @var \yii\web\View $this
      */
-    use yii\grid\GridView;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\DetailView;
@@ -30,39 +30,21 @@
         'weight',
         'shop',
         'outgoing_id',
-        'decl_type',
         'create_time:datetime',
         'update_time:datetime',
-        'op_notes',
-        'hub_id',
-        'location',
         [
             'attribute' => 'expected_incoming',
             'format'    => 'raw',
             'value'     => $model->expected_incoming_id ? Html::a("Expected Incoming #".$model->expected_incoming_id,
                 Url::to(['expected-incoming/view', 'id' => $model->expected_incoming_id])) : null,
         ],
-        'part_number',
     ],
 ]); ?>
 
-    <h2>Items in declaration:
-        <?= Html::a('Edit', \yii\helpers\Url::to(['/ffClient/incoming/declaration-update', 'id' => $model->id]), [
-            'class' => 'btn btn-warning btn-sm',
-        ]) ?>
-    </h2>
-<?= GridView::widget([
-    'dataProvider' => $declarationProvider,
-    'columns'      => [
-        'id',
-        'descr',
-        'descr_ru',
-        'line_value',
-        'line_weight',
-        'url',
-        'qty',
-    ],
-]); ?>
+<?= $this->render('@app/modules/ffClient/views/common/declaration-view', [
+    'declaration'   => $model->declaration,
+    'itemsProvider' => $declarationProvider,
+]) ?>
 
     <h2>Thumbnails:</h2>
 <?php foreach ($model->packageThumbnails as $thumbnail): ?>

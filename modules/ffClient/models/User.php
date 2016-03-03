@@ -50,7 +50,7 @@
         public function rules()
         {
             return [
-                [['first_name', 'last_name', 'auth_key', 'password_hash', 'email'], 'required'],
+                [['first_name', 'last_name', 'auth_key', 'password_hash', 'email', 'ff_id'], 'required'],
                 [['status', 'created_at', 'updated_at'], 'integer'],
                 [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
                 [['auth_key'], 'string', 'max' => 32],

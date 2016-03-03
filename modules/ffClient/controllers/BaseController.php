@@ -4,7 +4,6 @@
 
     use app\modules\ffClient\models\forms\ApiForm;
     use app\modules\ffClient\Module;
-    use yii\base\DynamicModel;
     use yii\helpers\ArrayHelper;
     use yii\web\Controller;
     use yii\web\HttpException;
@@ -59,7 +58,7 @@
          */
         public function getApiRoute($route, array $get = [])
         {
-            return $this->client->getApiRoute($route)."?".http_build_query($get);
+            return $this->client->getApiRoute($route).(count($get) ? "?".http_build_query($get) : "");
         }
 
         /**
@@ -74,13 +73,19 @@
             }
 
             if (ArrayHelper::getValue($response, 'message') && ArrayHelper::getValue($response, 'status')) {
-                throw new HttpException($response['status'], $response['message']);
+                $message = "FF API ERROR: ".$response['message'];
+                $status = $response['status'];
+                if ($type = ArrayHelper::getValue($response, 'type')) {
+                    throw new $type($message);
+                }
+                throw new HttpException($status, $message);
             }
         }
 
         /**
          * @param string $modelClass
          * @param null $response
+         *
          * @return ApiForm
          */
         public function getForm($modelClass, $id = null)

@@ -32,7 +32,7 @@
 
             if ($data = \Yii::$app->request->post('SpecialRequestForm')) {
                 $data['relatedId'] = $id;
-                $data['relatedType'] = $model->controller->relatedTypeIncoming;
+                $data['relatedType'] = $this->controller->relatedTypeIncoming;
                 $specialRequest = SpecialRequest::create($data);
                 $model->checkApiErrors($specialRequest);
                 if (!$model->hasErrors()) {

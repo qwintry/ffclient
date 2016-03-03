@@ -20,7 +20,7 @@
         const METHOD_SAVE = 'PATCH';
 
         protected static $defaultFilter = [
-            'expand' => 'specRequests,declaration',
+            'expand' => 'specRequests,items,declaration',
         ];
 
     }

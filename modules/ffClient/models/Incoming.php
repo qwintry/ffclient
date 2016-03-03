@@ -18,7 +18,7 @@
         const METHOD_SAVE = 'PATCH';
 
         protected static $defaultFilter = [
-            'expand' => 'specRequests,packageThumbnails,declaration',
+            'expand' => 'specRequests,packageThumbnails,declaration,items',
         ];
 
     }

@@ -23,7 +23,11 @@
         /**
          * @var string
          */
-        public $incomingModel = 'app\modules\ffClient\models\Incoming';
+        public $incomingModelClass = 'app\modules\ffClient\models\Incoming';
+        /**
+         * @var string
+         */
+        public $incomingFormClass = 'app\modules\ffClient\models\forms\IncomingForm';
         /**
          * @var string
          */
@@ -102,7 +106,7 @@
             ]);
 
             $declarationProvider = new ArrayDataProvider([
-                'allModels' => $incoming->declaration,
+                'allModels' => $incoming->items,
             ]);
 
             return $this->render('view', [
