@@ -67,19 +67,11 @@
     ],
 ]); ?>
 
-<h2>Items in declaration:</h2>
-<?= GridView::widget([
-    'dataProvider' => $declarationProvider,
-    'columns'      => [
-        'id',
-        'descr',
-        'descr_ru',
-        'line_value',
-        'line_weight',
-        'url',
-        'qty',
-    ],
-]); ?>
+
+<?= $this->render('@app/modules/ffClient/views/common/declaration-view', [
+    'model'   => $model,
+    'itemsProvider' => $declarationProvider,
+]) ?>
 
 <h2>Invoice:
     <?php if (!$model->invoice_paid): ?>

@@ -39,28 +39,14 @@
 
 
 <?= $this->render('@app/modules/ffClient/views/common/declaration-view', [
-    'declaration'   => $model->declaration,
+    'model'         => $model,
     'itemsProvider' => $declarationProvider,
 ]) ?>
+
+<?= $this->render('@app/modules/ffClient/views/common/special-request-view', [
+    'model'                   => $model,
+    'specialRequestsProvider' => $specialRequestsProvider,
 ]) ?>
-
-    <h2>Special Requests:
-        <?= Html::a('Create', \yii\helpers\Url::to(['special-request-create', 'id' => $model->id]), [
-            'class' => 'btn btn-success btn-sm',
-        ]) ?>
-    </h2>
-
-<?= \yii\grid\GridView::widget([
-    'dataProvider' => $specialRequestsProvider,
-    'columns'      => [
-        'customerNotes',
-        'type',
-        'status',
-        'handling:boolean',
-        'createTime:datetime',
-        'updateTime:datetime',
-    ],
-]); ?>
 
 <?= \yii\helpers\Html::a('List', \yii\helpers\Url::to(['/ffClient/expected-incoming/index']), [
     'class' => 'btn btn-default',

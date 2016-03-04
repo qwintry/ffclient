@@ -42,7 +42,7 @@
 ]); ?>
 
 <?= $this->render('@app/modules/ffClient/views/common/declaration-view', [
-    'declaration'   => $model->declaration,
+    'model'         => $model,
     'itemsProvider' => $declarationProvider,
 ]) ?>
 
@@ -51,36 +51,10 @@
     <?= \yii\helpers\Html::img("http://ff.qwintry.loc/file/download?id=".$thumbnail->id); ?>
 <?php endforeach; ?>
 
-    <h2>Special Requests:
-        <?= Html::a('Create', \yii\helpers\Url::to(['special-request-create', 'id' => $model->id]), [
-            'class' => 'btn btn-success btn-sm',
-        ]) ?>
-    </h2>
-<?= \yii\grid\GridView::widget([
-    'dataProvider' => $specialRequestsProvider,
-    'columns'      => [
-        'customer_notes',
-        'type',
-        'status',
-        'notes',
-        'handling:boolean',
-        'charge',
-        [
-            'class'     => \yii\grid\DataColumn::className(),
-            'attribute' => 'authorId',
-            'content'   => function ($model, $key, $index) {
-                if ($model->authorId) {
-                    return Html::a("User #".$model->authorId, Url::to(['user/view', 'id' => $model->authorId]));
-                }
-
-                return null;
-            },
-        ],
-        'hub_id',
-        'create_time:datetime',
-        'update_time:datetime',
-    ],
-]); ?>
+<?= $this->render('@app/modules/ffClient/views/common/special-request-view', [
+    'model'                   => $model,
+    'specialRequestsProvider' => $specialRequestsProvider,
+]) ?>
 
 
 <?= \yii\helpers\Html::a('Back', \yii\helpers\Url::to(['/ffClient/incoming/index']), [

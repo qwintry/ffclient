@@ -1,8 +1,10 @@
 <?php
     /**
-     * @var array $declaration
+     * @var \app\modules\ffClient\models\ApiModel $model
      * @var \yii\data\ArrayDataProvider $itemsProvider
      */
+
+    $declaration = $model->declaration;
 ?>
 
     <h2>Declaration:</h2>
@@ -20,7 +22,7 @@
 
     <h2>Items:
         <?= \yii\helpers\Html::a('Edit',
-            \yii\helpers\Url::to(['/ffClient/incoming/declaration-update', 'id' => $model->id]), [
+            \yii\helpers\Url::to(['declaration-update', 'id' => $model->id]), [
                 'class' => 'btn btn-warning btn-sm',
             ]) ?>
     </h2>

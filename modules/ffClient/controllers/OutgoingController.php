@@ -8,6 +8,7 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\models\User;
     use app\modules\ffClient\models\File;
     use app\modules\ffClient\models\forms\OutgoingForm;
     use app\modules\ffClient\models\Incoming;
@@ -67,8 +68,9 @@
         public function actionView($id)
         {
             $outgoing = Outgoing::findOne(['id' => $id]);
+
             $declarationProvider = new ArrayDataProvider([
-                'allModels' => $outgoing->declaration,
+                'allModels' => $outgoing->items,
             ]);
 
             return $this->render('view', [
@@ -80,16 +82,19 @@
         /**
          * @return string|\yii\web\Response
          */
-        public function actionCreate()
+        public function actionCreate($user_id = null)
         {
-            $model = $this->getForm(OutgoingForm::className());
-            if ($incomings = Incoming::findAll()) {
+            if ($user_id) {
+                $incomings = Incoming::findAll(['user_id' => $user_id]);
                 $incomings = ArrayHelper::map($incomings, 'id', function ($item) {
                     return "#".$item['id']." ".$item['tracking'];
                 });
             } else {
                 $incomings = [];
             }
+
+            $model = $this->getForm(OutgoingForm::className());
+            $model->user_id = $user_id;
 
             if ($data = \Yii::$app->request->post('OutgoingForm')) {
                 /**
@@ -104,8 +109,6 @@
                     ];
                     $file->delete();
                 }
-
-                $data['user_id'] = \Yii::$app->user->getIdentity()->ff_id;
 
                 if ($outgoing = Outgoing::create($data)) {
                     $model->checkApiErrors($outgoing);

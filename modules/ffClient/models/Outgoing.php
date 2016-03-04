@@ -20,7 +20,7 @@
         const METHOD_CREATE = "POST";
 
         protected static $defaultFilter = [
-            'expand' => 'declaration, storeInvoice',
+            'expand' => 'declaration, storeInvoice, items',
         ];
 
         public function pay()

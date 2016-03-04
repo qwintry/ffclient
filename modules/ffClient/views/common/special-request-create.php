@@ -26,7 +26,7 @@
         'enableAjaxValidation'   => true,
         'enableClientValidation' => true,
     ]) ?>
-
+<?= $form->errorSummary($model); ?>
 <div class="row">
     <?= $form->field($model, 'customerNotes', [
         'options' => [
@@ -41,7 +41,7 @@
             'class' => 'col-lg-6',
         ],
     ])->dropDownList(Yii::$app->getModule('ffClient')->reference->specialRequestTypes(), [
-        'prompt' => '-- Choose request type'
+        'prompt' => '-- Choose request type',
     ]) ?>
 
 </div>

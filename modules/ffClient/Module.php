@@ -132,6 +132,7 @@
          * @var array
          */
         public static $OutgoingForm = [
+            'user_id',
             'tracking',
             'weight',
             'status',
