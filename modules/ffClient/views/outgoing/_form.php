@@ -72,7 +72,7 @@
     <fieldset>
         <legend>Recipient Info</legend>
         <div class="row">
-            <?= $form->field($model, 'firstName', [
+            <?= $form->field($model, 'address[firstName]', [
                 'options'  => [
                     'class' => 'col-lg-4',
                 ],
@@ -220,7 +220,7 @@
                 'options' => [
                     'class' => 'col-lg-4',
                 ],
-            ])->fileInput(['multiple' => true, 'class' => 'btn btn-warning btn-lg'])->label('Passport Scans') ?>
+            ])->fileInput(['multiple' => true, 'class' => 'btn btn-default btn-lg'])->label('Passport Scans') ?>
         </div>
     </fieldset>
 
