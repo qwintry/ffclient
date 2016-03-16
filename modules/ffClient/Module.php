@@ -95,7 +95,7 @@
             'location',
             'expected_incoming_id',
             'part_number',
-            'declMethod',
+            'carrier',
             'country',
         ];
 
@@ -104,12 +104,8 @@
          * @var array
          */
         public static $DeclarationForm = [
-            'descr',
-            'descrLocal',
-            'totalValue',
-            'totalWeight',
-            'url',
-            'quantity',
+            'country',
+            'carrier',
         ];
 
         /**

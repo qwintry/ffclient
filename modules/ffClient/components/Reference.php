@@ -60,7 +60,7 @@
          */
         public function declMethods()
         {
-            return ['usps' => 'USPS', 'qwair' => 'Qwair', 'Ecopost' => 'ecopost'];
+            return ['usps' => 'USPS', 'qwair' => 'Qwair', 'ecopost' => 'Ecopost'];
         }
 
         public function specialRequestTypes()

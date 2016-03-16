@@ -20,6 +20,7 @@
      * @package app\modules\ffClient\models
      *
      * @method checkApiErrors($response)
+     * @see [ApiErrorBehavior::checkApiErrors()]
      */
     class ApiModel extends DynamicModel
     {
@@ -94,7 +95,8 @@
             if (ArrayHelper::getValue($response, 'message') && ArrayHelper::getValue($response, 'status')) {
                 $message = "FF API ERROR: ".$response['message'];
                 $status = $response['status'];
-                if ($type = ArrayHelper::getValue($response, 'type')) {
+                $type = ArrayHelper::getValue($response, 'type');
+                if ($type && class_exists($type)) {
                     throw new $type($message);
                 }
                 throw new HttpException($status, $message);

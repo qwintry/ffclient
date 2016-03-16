@@ -25,10 +25,8 @@
         'enableClientValidation' => true,
     ]);
 ?>
-
-
 <div class="row">
-    <?= $form->field($model, 'declMethod', [
+    <?= $form->field($model, 'carrier', [
         'options' => [
             'class' => 'col-lg-3',
         ],
@@ -40,7 +38,7 @@
     ])->dropDownList(Yii::$app->getModule('ffClient')->reference->countriesList()) ?>
 </div>
 
-<?php foreach ($items as $i => $item): ?>
+<?php foreach ($model->items as $i => $item): ?>
     <div class="item_holder">
         <?php if (isset($item->id)): ?>
             <h3>Edit item #<?= $item['id'] ?>
@@ -53,18 +51,16 @@
             <h3>Add new item</h3>
         <?php endif; ?>
         <div class="row">
-            <?= $form->field($item, 'descr', [
+            <?= $form->field($item, '['.$i.']descr', [
                 'inputOptions' => [
-                    'name'  => 'DeclarationForm['.$i.'][descr]',
                     'class' => 'form-control',
                 ],
                 'options'      => [
                     'class' => ' col-lg-6',
                 ],
             ])->textarea() ?>
-            <?= $form->field($item, 'descrLocal', [
+            <?= $form->field($item, '['.$i.']descrLocal', [
                 'inputOptions' => [
-                    'name'  => 'DeclarationForm['.$i.'][descrLocal]',
                     'class' => 'form-control',
                 ],
                 'options'      => [
@@ -73,9 +69,8 @@
             ])->textarea() ?>
         </div>
         <div class="row">
-            <?= $form->field($item, 'totalValue', [
+            <?= $form->field($item, '['.$i.']totalValue', [
                 'inputOptions' => [
-                    'name'  => 'DeclarationForm['.$i.'][totalValue]',
                     'class' => 'form-control',
                 ],
                 'template'     => '
@@ -91,9 +86,8 @@
                 ],
             ]) ?>
 
-            <?= $form->field($item, 'totalWeight', [
+            <?= $form->field($item, '['.$i.']totalWeight', [
                 'inputOptions' => [
-                    'name'  => 'DeclarationForm['.$i.'][totalWeight]',
                     'class' => 'form-control',
                 ],
                 'template'     => '
@@ -109,19 +103,17 @@
                 ],
             ])->textInput(['maxlength' => 5]) ?>
 
-            <?= $form->field($item, 'url', [
-                'inputOptions' => [
-                    'name'  => 'DeclarationForm['.$i.'][url]',
-                    'class' => 'form-control',
-                ],
-                'options'      => [
-                    'class' => ' col-lg-3',
-                ],
-            ]) ?>
+<!--            --><?//= $form->field($item, '['.$i.']url', [
+//                'inputOptions' => [
+//                    'class' => 'form-control',
+//                ],
+//                'options'      => [
+//                    'class' => ' col-lg-3',
+//                ],
+//            ]) ?>
 
-            <?= $form->field($item, 'quantity', [
+            <?= $form->field($item, '['.$i.']quantity', [
                 'inputOptions' => [
-                    'name'  => 'DeclarationForm['.$i.'][quantity]',
                     'class' => 'form-control',
                 ],
                 'options'      => [

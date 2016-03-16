@@ -10,14 +10,10 @@
 
     use app\modules\ffClient\controllers\BaseController;
     use app\modules\ffClient\models\ApiModel;
-    use app\modules\ffClient\models\forms\ApiForm;
     use app\modules\ffClient\models\forms\DeclarationForm;
-    use app\modules\ffClient\models\forms\ExpectedIncomingForm;
-    use app\modules\ffClient\models\forms\IncomingForm;
+    use app\modules\ffClient\models\Item;
     use yii\base\Action;
-    use yii\base\Controller;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Url;
+    use yii\web\NotFoundHttpException;
 
     class DeclarationUpdateAction extends Action
     {
@@ -31,51 +27,46 @@
         {
             /**
              * @var ApiModel $incomingModelClass
-             * @var ApiForm $incomingFormClass
-             *
-             * @var BaseController $this->controller
-             * @var ApiForm $model
-             * @var ApiForm $incomingForm
              */
             $incomingModelClass = $this->controller->incomingModelClass;
-            $incomingFormClass =  $this->controller->incomingFormClass;
+            /**
+             * @var BaseController $controller
+             */
+            $controller = $this->controller;
 
             $incoming = $incomingModelClass::findOne(['id' => $id]);
-            $incomingForm = $this->controller->getForm($incomingFormClass::className(), $incoming->id);
-            $declaration = $incoming->declaration;
-            $incomingForm->country = ArrayHelper::getValue($declaration, 'country');
-            $incomingForm->declMethod = ArrayHelper::getValue($declaration, 'method');
+            if ($incoming == null) {
+                throw new NotFoundHttpException();
+            }
 
-            $models = [];
-            if ($items = $incoming->items) {
-                foreach ($items as $item) {
-                    $model = $this->controller->getForm(DeclarationForm::className(), $item['id']);
-                    $model->setAttributes((array)$item, false);
-                    $models[] = $model;
+            /**
+             * @var DeclarationForm $model
+             */
+            $model = $controller->getForm(DeclarationForm::className());
+            if ($incoming->declaration) {
+                $model->setAttributes($incoming->declaration, false);
+            }
+
+            if ($data = \Yii::$app->request->post()) {
+                $incomingData = $data['DeclarationForm'];
+                $incomingData['items'] = $data['Item'];
+
+                $response = $incomingModelClass::save($id, $incomingData);
+                $model->checkApiErrors($response);
+                if (!$model->hasErrors()) {
+                    return $this->controller->refresh();
                 }
+
+                $model->setAttributes($data['DeclarationForm'], false);
+                $model->setItems($data['Item']);
+            } else {
+                $model->setItems($incoming->items);
+                $model->items[] = new Item();
             }
-
-            //saving data
-            if (\Yii::$app->request->isPost) {
-                $rc = new \ReflectionClass($incomingForm);
-                $incomingFormClassShort = $rc->getShortName();
-
-                $declarationFormData = \Yii::$app->request->post('DeclarationForm');
-                $incomingFormData = \Yii::$app->request->post($incomingFormClassShort);
-                $data = $incomingFormData;
-                $data['items'] = $declarationFormData;
-                $incoming::save($id, $data);
-
-                return $this->controller->redirect(Url::to(['view', 'id' => $id]));
-            }
-
-            //add new item
-            $models[] = $this->controller->getForm(DeclarationForm::className());
 
             //render view
             return $this->controller->render('@app/modules/ffClient/views/common/declaration-update', [
-                'items' => $models,
-                'model' => $incomingForm,
+                'model' => $model,
             ]);
         }
 
