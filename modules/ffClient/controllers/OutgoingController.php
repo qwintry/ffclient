@@ -8,6 +8,8 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\models\User;
+    use app\modules\ffClient\models\File;
     use app\modules\ffClient\models\forms\OutgoingForm;
     use app\modules\ffClient\models\Incoming;
     use app\modules\ffClient\models\Outgoing;
@@ -15,8 +17,6 @@
     use yii\filters\AccessControl;
     use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
-    use yii\helpers\VarDumper;
-    use yii\web\NotFoundHttpException;
 
     class OutgoingController extends BaseController
     {
@@ -52,7 +52,7 @@
             $outgoings = Outgoing::findAll();
 
             $provider = new ArrayDataProvider([
-                'allModels'     => $outgoings,
+                'allModels' => $outgoings,
             ]);
 
             return $this->render('index', [
@@ -68,8 +68,9 @@
         public function actionView($id)
         {
             $outgoing = Outgoing::findOne(['id' => $id]);
+
             $declarationProvider = new ArrayDataProvider([
-                'allModels'     => $outgoing->declaration,
+                'allModels' => $outgoing->items,
             ]);
 
             return $this->render('view', [
@@ -81,17 +82,34 @@
         /**
          * @return string|\yii\web\Response
          */
-        public function actionCreate()
+        public function actionCreate($user_id = null)
         {
-            $model = $this->getForm(OutgoingForm::className());
-            if($incomings = Incoming::findAll()) {
-                $incomings = ArrayHelper::map($incomings, 'id', 'tracking');
+            if ($user_id) {
+                $incomings = Incoming::findAll(['user_id' => $user_id]);
+                $incomings = ArrayHelper::map($incomings, 'id', function ($item) {
+                    return "#".$item['id']." ".$item['tracking'];
+                });
             } else {
                 $incomings = [];
             }
 
+            $model = $this->getForm(OutgoingForm::className());
+            $model->user_id = $user_id;
 
             if ($data = \Yii::$app->request->post('OutgoingForm')) {
+                /**
+                 * @var File[] $files
+                 */
+                $files = File::getInstances($model, 'passportFiles');
+                foreach ($files as $file) {
+                    $file->upload();
+                    $data['address']['passportFiles'][] = [
+                        'base64Data'      => $file->getBase64Encoded(),
+                        'base64Extension' => $file->getExtension(),
+                    ];
+                    $file->delete();
+                }
+
                 if ($outgoing = Outgoing::create($data)) {
                     $model->checkApiErrors($outgoing);
                     if (!$model->hasErrors()) {
@@ -99,10 +117,11 @@
                     }
                 }
                 $model->setAttributes($data, false);
+                $model->address = $data['address'];
             }
 
             return $this->render('create', [
-                'model' => $model,
+                'model'     => $model,
                 'incomings' => $incomings,
             ]);
         }

@@ -8,20 +8,46 @@
 
     namespace app\modules\ffClient\controllers;
 
-    use app\modules\ffClient\models\forms\DeclarationForm;
-    use app\modules\ffClient\models\forms\IncomingForm;
-    use app\modules\ffClient\models\forms\SpecialRequestForm;
+    use app\modules\ffClient\components\DeclarationUpdateAction;
+    use app\modules\ffClient\components\SpecialRequestCreateAction;
     use app\modules\ffClient\models\Incoming;
     use app\modules\ffClient\models\SpecialRequest;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Url;
-    use yii\helpers\VarDumper;
-    use yii\web\NotFoundHttpException;
 
     class IncomingController extends BaseController
     {
+
+        /**
+         * @var string
+         */
+        public $incomingModelClass = 'app\modules\ffClient\models\Incoming';
+        /**
+         * @var string
+         */
+        public $incomingFormClass = 'app\modules\ffClient\models\forms\IncomingForm';
+        /**
+         * @var string
+         */
+        public $relatedTypeIncoming;
+
+        public function init()
+        {
+            parent::init();
+
+            $this->relatedTypeIncoming = SpecialRequest::RELATED_TYPE_INCOMING;
+        }
+
+        /**
+         * @return array
+         */
+        public function actions()
+        {
+            return [
+                'declaration-update' => DeclarationUpdateAction::className(),
+                'special-request-create' => SpecialRequestCreateAction::className(),
+            ];
+        }
 
         public function behaviors()
         {
@@ -74,11 +100,11 @@
             $incoming = Incoming::findOne(['id' => $id]);
 
             $specialRequestsProvider = new ArrayDataProvider([
-                'allModels'     => $incoming->specRequests
+                'allModels' => $incoming->specRequests,
             ]);
 
             $declarationProvider = new ArrayDataProvider([
-                'allModels'     => $incoming->declaration,
+                'allModels' => $incoming->items,
             ]);
 
             return $this->render('view', [
@@ -94,83 +120,27 @@
          * @return string
          * @throws \yii\web\NotFoundHttpException
          */
-        public function actionUpdate($id)
-        {
-            $model = $this->getForm(IncomingForm::className(), $id);
+//        public function actionUpdate($id)
+//        {
+//            $model = $this->getForm(IncomingForm::className(), $id);
+//
+//            //saving data
+//            if ($data = \Yii::$app->request->post('IncomingForm')) {
+//                if ($incoming = Incoming::save($id, $data)) {
+//                    $model->checkApiErrors($incoming);
+//                    if (!$model->hasErrors()) {
+//                        return $this->redirect(Url::to(['view', 'id' => $model->id]));
+//                    }
+//                }
+//            }
+//
+//            //render update form
+//            $incoming = Incoming::findOne(['id' => $id]);
+//            $model->setAttributes($incoming->getAttributes(), false);
+//
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
+//        }
 
-            //saving data
-            if ($data = \Yii::$app->request->post('IncomingForm')) {
-                if ($incoming = Incoming::save($id, $data)) {
-                    $model->checkApiErrors($incoming);
-                    if (!$model->hasErrors()) {
-                        return $this->redirect(Url::to(['view', 'id' => $model->id]));
-                    }
-                }
-            }
-
-            //render update form
-            $incoming = Incoming::findOne(['id' => $id]);
-            $model->setAttributes($incoming->getAttributes(), false);
-
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-
-        /**
-         * @param $id
-         *
-         * @return string|\yii\web\Response
-         * @throws \yii\web\NotFoundHttpException
-         */
-        public function actionDeclarationUpdate($id)
-        {
-            $incoming = Incoming::findOne(['id' => $id]);
-
-            $models = [];
-            foreach ($incoming->declaration as $item) {
-                $model = $this->getForm(DeclarationForm::className(), $item->id);
-                $model->setAttributes((array)$item, false);
-                $models[] = $model;
-            }
-
-            //saving data
-            if ($data = \Yii::$app->request->post('DeclarationForm')) {
-                Incoming::save($id, ['items' => $data]);
-
-                return $this->redirect(Url::to(['view', 'id' => $id]));
-            }
-
-            $models[] = $this->getForm(DeclarationForm::className());
-
-            //render view
-            return $this->render('declaration-update', [
-                'models' => $models,
-            ]);
-        }
-
-        /**
-         * @param $id
-         *
-         * @return string|\yii\web\Response
-         */
-        public function actionSpecialRequestCreate($id)
-        {
-            $model = $this->getForm(SpecialRequestForm::className());
-
-            if ($data = \Yii::$app->request->post('SpecialRequestForm')) {
-                $data['relatedId'] = $id;
-                $data['relatedType'] = SpecialRequest::RELATED_TYPE_INCOMING;
-                $specialRequest = SpecialRequest::create($data);
-                $model->checkApiErrors($specialRequest);
-                if (!$model->hasErrors()) {
-                    return $this->redirect(Url::to(['view', 'id' => $id]));
-                }
-                $model->setAttributes($data, false);
-            }
-
-            return $this->render('special-request', [
-                'model' => $model,
-            ]);
-        }
     }

@@ -20,6 +20,7 @@
      * @package app\modules\ffClient\models
      *
      * @method checkApiErrors($response)
+     * @see [ApiErrorBehavior::checkApiErrors()]
      */
     class ApiModel extends DynamicModel
     {
@@ -92,7 +93,13 @@
             }
 
             if (ArrayHelper::getValue($response, 'message') && ArrayHelper::getValue($response, 'status')) {
-                throw new HttpException($response['status'], $response['message']);
+                $message = "FF API ERROR: ".$response['message'];
+                $status = $response['status'];
+                $type = ArrayHelper::getValue($response, 'type');
+                if ($type && class_exists($type)) {
+                    throw new $type($message);
+                }
+                throw new HttpException($status, $message);
             }
             if (ArrayHelper::getValue($response, 'message') && ArrayHelper::getValue($response, 'stack-trace')) {
                 throw new HttpException(500, $response['message']);
@@ -135,7 +142,7 @@
             $url = self::getApiRoute(static::ROUTE_VIEW, $filter);
 
             $response = self::doRequest($url);
-            if (isset($response->id)) {
+            if (ArrayHelper::getValue($response, 'id')) {
                 return new static((array)$response);
             }
 

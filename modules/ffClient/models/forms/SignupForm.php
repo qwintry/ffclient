@@ -5,7 +5,6 @@
     use app\models\User;
     use app\modules\ffClient\components\ApiErrorBehavior;
     use yii\base\Model;
-    use yii\helpers\ArrayHelper;
 
     /**
      * Created by PhpStorm.

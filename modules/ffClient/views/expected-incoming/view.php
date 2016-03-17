@@ -7,10 +7,10 @@
      *
      * @var stdClass $model
      * @var \yii\data\ArrayDataProvider $specialRequestsProvider
+     * @var \yii\data\ArrayDataProvider $declarationProvider
      */
 
     use yii\helpers\Html;
-    use yii\helpers\Url;
 
     $title = 'Expected Incoming: '.$model->tracking." #".$model->id;
     $this->title = $title;
@@ -28,55 +28,26 @@
         'tracking',
         'user_id',
         'shop',
-        'decl_type',
-        'hub_id',
-        'received',
+        'received:boolean',
         'user_notes',
-        'processed',
-        'create_time:datetime',
-        'update_time:datetime',
-        //        [
-        //            'class' => \yii\grid\Column::className(),
-        //            'label' => 'Declarations',
-        //            'value' => count($model->declaration),
-        //        ],
-    ],
-]); ?>
-
-    <h2>Special Requests:
-        <?= Html::a('Create', \yii\helpers\Url::to(['special-request-create', 'id' => $model->id]), [
-            'class' => 'btn btn-success btn-sm',
-        ]) ?>
-    </h2>
-<?= \yii\grid\GridView::widget([
-    'dataProvider' => $specialRequestsProvider,
-    'columns'      => [
-        'customer_notes',
-        'type',
-        'status',
-        'notes',
-        'handling:boolean',
-        'charge',
-        [
-            'class'     => \yii\grid\DataColumn::className(),
-            'attribute' => 'authorId',
-            'content'   => function ($model, $key, $index) {
-                if ($model->authorId) {
-                    return Html::a("User #".$model->authorId, Url::to(['user/view', 'id' => $model->authorId]));
-                }
-
-                return null;
-            },
-        ],
-        'hub_id',
+        'processed:boolean',
         'create_time:datetime',
         'update_time:datetime',
     ],
 ]); ?>
+
+
+
+<?= $this->render('@app/modules/ffClient/views/common/declaration-view', [
+    'model'         => $model,
+    'itemsProvider' => $declarationProvider,
+]) ?>
+
+<?= $this->render('@app/modules/ffClient/views/common/special-request-view', [
+    'model'                   => $model,
+    'specialRequestsProvider' => $specialRequestsProvider,
+]) ?>
 
 <?= \yii\helpers\Html::a('List', \yii\helpers\Url::to(['/ffClient/expected-incoming/index']), [
     'class' => 'btn btn-default',
-]) ?>
-<?= \yii\helpers\Html::a('Update', \yii\helpers\Url::to(['/ffClient/expected-incoming/update', 'id' => $model->id]), [
-    'class' => 'btn btn-warning',
 ]) ?>

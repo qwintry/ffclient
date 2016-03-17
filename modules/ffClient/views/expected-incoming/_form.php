@@ -30,15 +30,15 @@
         ],
     ]) ?>
     <?= $form->field($model, 'user_id', [
-        'options' => [
-            'class' => 'col-lg-4',
-        ],
-    ])->dropDownList(User::getList()) ?>
+            'options' => [
+                'class' => 'col-lg-4',
+            ],
+        ])->dropDownList(User::getList()) ?>
     <?= $form->field($model, 'shop', [
-        'options' => [
-            'class' => 'col-lg-4',
-        ],
-    ]) ?>
+            'options' => [
+                'class' => 'col-lg-4',
+            ],
+        ]) ?>
 </div>
 
 <div class="row">
