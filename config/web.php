@@ -41,7 +41,13 @@
             'urlManager' => [
                 'enablePrettyUrl' => true,
                 'showScriptName' => false,
-                'rules' => [],
+                'rules' => [
+                    //remove id from get params
+                    '<controller:[\w-]+>' => 'ffClient/<controller>/index',
+                    '<controller:[\w-]+>/<id:\d+>' => 'ffClient/<controller>/view',
+                    '<controller:[\w-]+>/<id:\d+>/<action:\w+>' => 'ffClient/<controller>/<action>',
+                    '<controller:[\w-]+>/<action:[\w-]+>' => 'ffClient/<controller>/<action>',
+                ],
             ],
             'db'           => require(__DIR__.'/db.php'),
         ],

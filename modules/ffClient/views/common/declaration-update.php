@@ -103,15 +103,6 @@
                 ],
             ])->textInput(['maxlength' => 5]) ?>
 
-<!--            --><?//= $form->field($item, '['.$i.']url', [
-//                'inputOptions' => [
-//                    'class' => 'form-control',
-//                ],
-//                'options'      => [
-//                    'class' => ' col-lg-3',
-//                ],
-//            ]) ?>
-
             <?= $form->field($item, '['.$i.']quantity', [
                 'inputOptions' => [
                     'class' => 'form-control',
