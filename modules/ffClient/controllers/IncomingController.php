@@ -14,6 +14,7 @@
     use app\modules\ffClient\models\SpecialRequest;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
+    use yii\web\NotFoundHttpException;
 
     class IncomingController extends BaseController
     {
@@ -78,7 +79,9 @@
          */
         public function actionIndex()
         {
-            $incomings = Incoming::findAll();
+            $incomings = Incoming::findAll([
+                'user_id' => \Yii::$app->user->ffId,
+            ]);
             $provider = new ArrayDataProvider([
                 'models'     => $incomings,
                 'totalCount' => count($incomings),
@@ -98,6 +101,9 @@
         public function actionView($id)
         {
             $incoming = Incoming::findOne(['id' => $id]);
+            if($incoming->user_id != \Yii::$app->user->ffId) {
+                throw new NotFoundHttpException("Incoming not found!");
+            }
 
             $specialRequestsProvider = new ArrayDataProvider([
                 'allModels' => $incoming->specRequests,
@@ -113,34 +119,5 @@
                 'declarationProvider'     => $declarationProvider,
             ]);
         }
-
-        /**
-         * @param $id
-         *
-         * @return string
-         * @throws \yii\web\NotFoundHttpException
-         */
-//        public function actionUpdate($id)
-//        {
-//            $model = $this->getForm(IncomingForm::className(), $id);
-//
-//            //saving data
-//            if ($data = \Yii::$app->request->post('IncomingForm')) {
-//                if ($incoming = Incoming::save($id, $data)) {
-//                    $model->checkApiErrors($incoming);
-//                    if (!$model->hasErrors()) {
-//                        return $this->redirect(Url::to(['view', 'id' => $model->id]));
-//                    }
-//                }
-//            }
-//
-//            //render update form
-//            $incoming = Incoming::findOne(['id' => $id]);
-//            $model->setAttributes($incoming->getAttributes(), false);
-//
-//            return $this->render('update', [
-//                'model' => $model,
-//            ]);
-//        }
 
     }

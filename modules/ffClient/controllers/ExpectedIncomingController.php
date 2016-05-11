@@ -12,11 +12,12 @@
     use app\modules\ffClient\components\SpecialRequestCreateAction;
     use app\modules\ffClient\models\ExpectedIncoming;
     use app\modules\ffClient\models\forms\ExpectedIncomingForm;
-    use app\modules\ffClient\models\forms\SpecialRequestForm;
     use app\modules\ffClient\models\SpecialRequest;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
+    use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
+    use yii\web\NotFoundHttpException;
 
     class ExpectedIncomingController extends BaseController
     {
@@ -82,7 +83,9 @@
          */
         public function actionIndex()
         {
-            $expectedIncomings = ExpectedIncoming::findAll();
+            $expectedIncomings = ExpectedIncoming::findAll([
+                'user_id' => \Yii::$app->user->ffId,
+            ]);
             $provider = new ArrayDataProvider([
                 'allModels' => $expectedIncomings,
             ]);
@@ -101,6 +104,9 @@
         public function actionView($id)
         {
             $expectedIncoming = ExpectedIncoming::findOne(['id' => $id]);
+            if($expectedIncoming->user_id !== \Yii::$app->user->ffId) {
+                throw new NotFoundHttpException("Expected incoming not found!");
+            }
             $specialRequestsProvider = new ArrayDataProvider([
                 'allModels' => $expectedIncoming->specRequests,
             ]);
@@ -124,6 +130,9 @@
         public function actionUpdate($id)
         {
             $model = $this->getForm(ExpectedIncomingForm::className(), $id);
+            if($model->user_id !== \Yii::$app->user->ffId) {
+                throw new NotFoundHttpException("Expected incoming not found!");
+            }
 
             //saving data
             if ($data = \Yii::$app->request->post('ExpectedIncomingForm')) {
@@ -151,6 +160,9 @@
             $model = $this->getForm(ExpectedIncomingForm::className());
 
             if ($data = \Yii::$app->request->post('ExpectedIncomingForm')) {
+                if (ArrayHelper::getValue($data, 'user_id') === null) {
+                    $data['user_id'] = \Yii::$app->user->ffId;
+                }
                 if ($expectedIncoming = ExpectedIncoming::create($data)) {
                     $model->checkApiErrors($expectedIncoming);
                     if (!$model->hasErrors()) {

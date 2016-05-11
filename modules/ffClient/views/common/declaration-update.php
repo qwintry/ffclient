@@ -111,6 +111,15 @@
                     'class' => ' col-lg-3',
                 ],
             ]) ?>
+
+            <?= $form->field($item, '['.$i.']url', [
+                'inputOptions' => [
+                    'class' => 'form-control',
+                ],
+                'options'      => [
+                    'class' => ' col-lg-3',
+                ],
+            ]) ?>
         </div>
         <hr>
     </div>

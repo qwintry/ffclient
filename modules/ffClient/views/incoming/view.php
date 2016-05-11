@@ -47,9 +47,21 @@
 ]) ?>
 
     <h2>Thumbnails:</h2>
-<?php foreach ($model->packageThumbnails as $thumbnail): ?>
-    <?= \yii\helpers\Html::img("http://ff.qwintry.loc/file/download?id=".$thumbnail->id); ?>
-<?php endforeach; ?>
+    <div class="row">
+        <?php foreach ($model->photosForApi as $photo): ?>
+            <?php if ($photo['base64Extension'] == 'pdf'): ?>
+                <div class="col-md-4">
+                    <embed src="data:application/pdf;base64,<?= $photo['base64Data'] ?>">
+                </div>
+            <?php else: ?>
+                <div class="col-md-4">
+                    <?= Html::img("data: image/*;base64,".$photo['base64Data'], [
+                        'style' => 'max-height:200px',
+                    ]) ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
 
 <?= $this->render('@app/modules/ffClient/views/common/special-request-view', [
     'model'                   => $model,

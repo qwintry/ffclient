@@ -20,7 +20,7 @@
         const METHOD_CREATE = "POST";
 
         protected static $defaultFilter = [
-            'expand' => 'declaration, storeInvoice, items',
+            'expand' => 'declaration, storeInvoice, items, passportPhotosForApi',
         ];
 
         public function pay()

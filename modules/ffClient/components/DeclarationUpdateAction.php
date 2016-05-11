@@ -35,7 +35,7 @@
             $controller = $this->controller;
 
             $incoming = $incomingModelClass::findOne(['id' => $id]);
-            if ($incoming == null) {
+            if ($incoming == null || $incoming->user_id !== \Yii::$app->user->ffId) {
                 throw new NotFoundHttpException();
             }
 

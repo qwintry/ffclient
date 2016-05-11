@@ -39,7 +39,7 @@
             $items[] = ['label' => 'Login', 'url' => ['/site/login']];
             $items[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         } else {
-            $items[] = ['label' => 'Users', 'url' => Url::to(['/ffClient/user/index'])];
+//            $items[] = ['label' => 'Users', 'url' => Url::to(['/ffClient/user/index'])];
             $items[] = ['label' => 'Expected Incoming', 'url' => Url::to(['/ffClient/expected-incoming/index'])];
             $items[] = ['label' => 'Incoming', 'url' => Url::to(['/ffClient/incoming/index'])];
             $items[] = ['label' => 'Outgoing', 'url' => Url::to(['/ffClient/outgoing/index'])];

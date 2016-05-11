@@ -24,6 +24,7 @@
         public $totalValue;
         public $totalWeight;
         public $quantity;
+        public $url;
 
         /**
          * @return bool

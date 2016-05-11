@@ -10,6 +10,7 @@
 
     use app\modules\ffClient\models\Item;
     use yii\helpers\ArrayHelper;
+    use yii\helpers\VarDumper;
 
     /**
      * Class DeclarationForm
@@ -42,7 +43,9 @@
 
                 foreach ($itemsErrors as $i => $itemsError) {
                     foreach ($itemsError as $field => $msg) {
-                        $this->items[$i]->addError($field, $msg[0]);
+                        if (ArrayHelper::getValue($this->items, $i)) {
+                            $this->items[$i]->addError($field, $msg[0]);
+                        }
                     }
                 }
             }

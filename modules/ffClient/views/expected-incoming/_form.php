@@ -1,5 +1,4 @@
 <?php
-    use app\models\User;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\ActiveForm;
@@ -24,21 +23,17 @@
     ]) ?>
 <?= $form->errorSummary($model) ?>
 
-<div class="row"><?= $form->field($model, 'tracking', [
+<div class="row">
+    <?= $form->field($model, 'tracking', [
         'options' => [
             'class' => 'col-lg-4',
         ],
     ]) ?>
-    <?= $form->field($model, 'user_id', [
-            'options' => [
-                'class' => 'col-lg-4',
-            ],
-        ])->dropDownList(User::getList()) ?>
     <?= $form->field($model, 'shop', [
-            'options' => [
-                'class' => 'col-lg-4',
-            ],
-        ]) ?>
+        'options' => [
+            'class' => 'col-lg-4',
+        ],
+    ]) ?>
 </div>
 
 <div class="row">

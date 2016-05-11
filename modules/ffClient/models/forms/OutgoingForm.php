@@ -7,7 +7,10 @@
      */
 
     namespace app\modules\ffClient\models\forms;
-
+    /**
+     * Class OutgoingForm
+     * @package app\modules\ffClient\models\forms
+     */
     class OutgoingForm extends ApiForm
     {
         public $address;

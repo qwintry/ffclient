@@ -16,6 +16,7 @@
                 'class' => 'yii\caching\FileCache',
             ],
             'user'         => [
+                'class' => 'app\components\User',
                 'identityClass'   => 'app\models\User',
                 'enableAutoLogin' => true,
             ],

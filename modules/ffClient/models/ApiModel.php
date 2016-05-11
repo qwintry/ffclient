@@ -102,7 +102,7 @@
                 throw new HttpException($status, $message);
             }
             if (ArrayHelper::getValue($response, 'message') && ArrayHelper::getValue($response, 'stack-trace')) {
-                throw new HttpException(500, $response['message']);
+                throw new HttpException(500, $response['message']. (YII_ENV == 'dev' ? print_r($response['stack-trace'], true):""));
             }
         }
 

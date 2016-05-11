@@ -82,4 +82,16 @@
             ];
         }
 
+        /**
+         * @return mixed
+         */
+        public function deliveryPickupPoints()
+        {
+            /**
+             * @var Module $client
+             */
+            $client = \Yii::$app->getModule('ffClient');
+
+            return $client->doRequest('/api/reference/delivery-pickup-points');
+        }
     }

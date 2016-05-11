@@ -21,9 +21,22 @@
     'columns'      => [
         'customerNotes',
         'type',
+        'notes',
         'status',
-        'handling:boolean',
-        'createTime:datetime',
-        'updateTime:datetime',
+        [
+            'class' => \yii\grid\ActionColumn::className(),
+            'template' => '{view} {update} {delete}',
+            'buttons' => [
+              'view' => function($url, $model) {
+                  return \yii\helpers\Html::a('<i class="glyphicon glyphicon-eye-open"></i>', ['special-request/view', 'id' => $model->id]);
+              },
+              'update' => function($url, $model) {
+                  return \yii\helpers\Html::a('<i class="glyphicon glyphicon-pencil"></i>', ['special-request/update', 'id' => $model->id]);
+              },
+              'delete' => function($url, $model) {
+                  return \yii\helpers\Html::a('<i class="glyphicon glyphicon-remove"></i>', ['special-request/delete', 'id' => $model->id]);
+              },
+            ],
+        ]
     ],
 ]); ?>
