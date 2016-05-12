@@ -19,6 +19,8 @@
         const ROUTE_INCOMING_VIEW = 'incoming_view';
         const ROUTE_INCOMING_UPDATE = 'incoming_update';
         const ROUTE_SPECIAL_REQUEST_CREATE = 'special_request_create';
+        const ROUTE_SPECIAL_REQUEST_VIEW = 'special_request_view';
+        const ROUTE_SPECIAL_REQUEST_UPDATE = 'special_request_update';
         const ROUTE_OUTGOING_INDEX = 'outgoing_index';
         const ROUTE_OUTGOING_VIEW = 'outgoing_view';
         const ROUTE_OUTGOING_CREATE = 'outgoing_create';
@@ -56,6 +58,8 @@
             self::ROUTE_INCOMING_UPDATE          => 'api/incoming/update',
             //spec request
             self::ROUTE_SPECIAL_REQUEST_CREATE   => 'api/spec-request/create',
+            self::ROUTE_SPECIAL_REQUEST_VIEW     => 'api/spec-request/view',
+            self::ROUTE_SPECIAL_REQUEST_UPDATE     => 'api/spec-request/update',
             //outgoing
             self::ROUTE_OUTGOING_INDEX           => 'api/outgoing/index',
             self::ROUTE_OUTGOING_VIEW            => 'api/outgoing/view',

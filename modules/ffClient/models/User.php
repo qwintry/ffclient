@@ -24,6 +24,7 @@
      * @property string $first_name
      * @property string $last_name
      * @property integer $ff_id
+     * @property string $api_key
      *
      * @method checkApiErrors($response)
      */

@@ -28,4 +28,15 @@
             return $identity !== null ? $identity->ff_id : null;
         }
 
+        public function getApiKey()
+        {
+            /**
+             * @var \app\models\User $identity
+             */
+            $identity = $this->getIdentity();
+
+            return $identity !== null ? $identity->api_key : null;
+            
+        }
+
     }

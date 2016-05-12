@@ -17,6 +17,7 @@
     use yii\filters\AccessControl;
     use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
+    use yii\helpers\VarDumper;
     use yii\web\NotFoundHttpException;
 
     class ExpectedIncomingController extends BaseController
@@ -52,6 +53,20 @@
             ];
         }
 
+
+        /**
+         * @param \yii\base\Action $action
+         *
+         * @return bool
+         * @throws \yii\web\BadRequestHttpException
+         */
+        public function beforeAction($action)
+        {
+            Url::remember();
+
+            return parent::beforeAction($action);
+        }
+
         /**
          * @return array
          */
@@ -85,6 +100,7 @@
         {
             $expectedIncomings = ExpectedIncoming::findAll([
                 'user_id' => \Yii::$app->user->ffId,
+                'received' => 0,
             ]);
             $provider = new ArrayDataProvider([
                 'allModels' => $expectedIncomings,
@@ -104,7 +120,7 @@
         public function actionView($id)
         {
             $expectedIncoming = ExpectedIncoming::findOne(['id' => $id]);
-            if($expectedIncoming->user_id !== \Yii::$app->user->ffId) {
+            if($expectedIncoming->user_id != \Yii::$app->user->ffId) {
                 throw new NotFoundHttpException("Expected incoming not found!");
             }
             $specialRequestsProvider = new ArrayDataProvider([

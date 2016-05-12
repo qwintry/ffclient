@@ -8,6 +8,7 @@
 
     namespace app\modules\ffClient\controllers;
 
+    use app\models\forms\LoginForm;
     use app\modules\ffClient\models\forms\PasswordResetRequestForm;
     use app\modules\ffClient\models\forms\ResetPasswordForm;
     use app\modules\ffClient\models\forms\SignupForm;
@@ -36,6 +37,7 @@
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
                     $model->ff_id = ArrayHelper::getValue($response, 'id');
+                    $model->api_key = ArrayHelper::getValue($response, 'api_key');
                     if ($user = $model->signup()) {
                         if (\Yii::$app->getUser()->login($user)) {
                             return $this->goHome();
@@ -102,5 +104,31 @@
             ]);
         }
 
+        /**
+         * @return \yii\web\Response
+         */
+        public function actionLogout()
+        {
+            \Yii::$app->user->logout();
 
+            return $this->goHome();
+        }
+
+        /**
+         * @return string|\yii\web\Response
+         */
+        public function actionLogin()
+        {
+            if (!\Yii::$app->user->isGuest) {
+                return $this->goHome();
+            }
+
+            $model = new LoginForm();
+            if ($model->load(\Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            }
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
     }

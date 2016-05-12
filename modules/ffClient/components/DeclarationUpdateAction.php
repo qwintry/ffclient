@@ -13,6 +13,7 @@
     use app\modules\ffClient\models\forms\DeclarationForm;
     use app\modules\ffClient\models\Item;
     use yii\base\Action;
+    use yii\helpers\VarDumper;
     use yii\web\NotFoundHttpException;
 
     class DeclarationUpdateAction extends Action
@@ -35,8 +36,8 @@
             $controller = $this->controller;
 
             $incoming = $incomingModelClass::findOne(['id' => $id]);
-            if ($incoming == null || $incoming->user_id !== \Yii::$app->user->ffId) {
-                throw new NotFoundHttpException();
+            if ($incoming == null || $incoming->user_id != \Yii::$app->user->ffId) {
+                throw new NotFoundHttpException("Incoming not found!");
             }
 
             /**

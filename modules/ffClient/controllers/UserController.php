@@ -65,6 +65,7 @@
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
                     $model->ff_id = $response['id'];
+                    $model->api_key = $response['api_key'];
                     $model->setPassword($data['password']);
                     $model->generateAuthKey();
                     $model->save(false);

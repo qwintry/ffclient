@@ -10,5 +10,18 @@
 
     class SpecialRequestForm extends ApiForm
     {
+        public $customerFiles;
 
+        public function rules()
+        {
+            return [
+                [
+                    ['customerFiles'],
+                    'file',
+                    'skipOnEmpty' => true,
+                    'extensions'  => 'png, jpg, pdf, jpeg, bmp',
+                    'maxFiles'    => 10,
+                ],
+            ];
+        }
     }

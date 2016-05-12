@@ -29,17 +29,17 @@
         'status',
         'weight',
         'shop',
-        [
-            'class'   => \yii\grid\Column::className(),
-            'header'  => 'User',
-            'content' => function ($model, $key, $index) {
-                if ($model->user_id) {
-                    return Html::a("User #".$model->user_id, Url::to(['user/view-ex', 'id' => $model->user_id]));
-                }
-
-                return null;
-            },
-        ],
+//        [
+//            'class'   => \yii\grid\Column::className(),
+//            'header'  => 'User',
+//            'content' => function ($model, $key, $index) {
+//                if ($model->user_id) {
+//                    return Html::a("User #".$model->user_id, Url::to(['user/view-ex', 'id' => $model->user_id]));
+//                }
+//
+//                return null;
+//            },
+//        ],
         [
             'class'   => \yii\grid\Column::className(),
             'header'  => 'Outgoing',
@@ -54,7 +54,6 @@
         ],
         'create_time:datetime',
         'update_time:datetime',
-        'location',
         [
             'class'    => \yii\grid\ActionColumn::className(),
             'template' => '{view} {update} {declaration} {specRequest}',
@@ -73,7 +72,7 @@
                 },
                 'specRequest' => function ($url, $model) {
                     return Html::a('<i class="glyphicon glyphicon-plus-sign"></i>',
-                        Url::to(['special-request-create', 'id' => $model->id], [
+                        Url::to(['special-request/create', 'relatedType' => 'incoming', 'id' => $model->id], [
                             'class' => 'btn btn-link',
                         ]), [
                             'title' => 'Add special request',

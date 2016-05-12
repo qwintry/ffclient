@@ -14,6 +14,7 @@
     use app\modules\ffClient\models\SpecialRequest;
     use yii\data\ArrayDataProvider;
     use yii\filters\AccessControl;
+    use yii\helpers\Url;
     use yii\web\NotFoundHttpException;
 
     class IncomingController extends BaseController
@@ -71,6 +72,19 @@
                     ],
                 ],
             ];
+        }
+
+        /**
+         * @param \yii\base\Action $action
+         *
+         * @return bool
+         * @throws \yii\web\BadRequestHttpException
+         */
+        public function beforeAction($action)
+        {
+            Url::remember();
+
+            return parent::beforeAction($action);
         }
 
         /**
