@@ -61,7 +61,7 @@
                 $model->setAttributes($data['DeclarationForm'], false);
                 $model->setItems($data['Item']);
             } else {
-                $model->setItems($incoming->items);
+                $model->setItems($incoming->items ?: []);
                 $model->items[] = new Item();
             }
 

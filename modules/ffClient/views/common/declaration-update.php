@@ -128,7 +128,7 @@
 <div class="form-group">
     <div class="col-lg-11">
         <?= Html::submitButton(\Yii::t('app', 'Save'), ['class' => 'btn btn-primary']) ?>
-        <?= \yii\helpers\Html::a(\Yii::t('app', 'Cancel'), \yii\helpers\Url::to(['index']), [
+        <?= \yii\helpers\Html::a(\Yii::t('app', 'Back'), \yii\helpers\Url::to(['index']), [
             'class' => 'btn btn-link',
         ]) ?>
     </div>

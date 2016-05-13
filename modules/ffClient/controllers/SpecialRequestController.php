@@ -16,6 +16,7 @@
     use yii\filters\AccessControl;
     use yii\helpers\Url;
     use yii\helpers\VarDumper;
+    use yii\web\NotFoundHttpException;
 
     class SpecialRequestController extends BaseController
     {
@@ -90,6 +91,9 @@
             //render update form
             $specialRequest = SpecialRequest::findOne(['id' => $id]);
             $model->setAttributes($specialRequest->getAttributes(), false);
+            if($specialRequest->authorId != \Yii::$app->user->ffId) {
+                throw new NotFoundHttpException("Special request incoming not found!");
+            }
 
             return $this->render('update', [
                 'model' => $model,

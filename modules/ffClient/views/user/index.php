@@ -27,6 +27,7 @@
     'dataProvider' => $provider,
     'columns'      => [
         'id',
+        'ff_id',
         'username',
         'email',
         'created_at:datetime',

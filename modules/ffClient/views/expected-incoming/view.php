@@ -43,11 +43,6 @@
     'itemsProvider' => $declarationProvider,
 ]) ?>
 
-<?= $this->render('@app/modules/ffClient/views/common/special-request-view', [
-    'model'                   => $model,
-    'specialRequestsProvider' => $specialRequestsProvider,
-]) ?>
-
 <?= \yii\helpers\Html::a('List', \yii\helpers\Url::to(['/ffClient/expected-incoming/index']), [
     'class' => 'btn btn-default',
 ]) ?>

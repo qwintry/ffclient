@@ -57,14 +57,14 @@
                             'title' => 'Edit',
                         ]);
                 },
-                'specRequest' => function ($url, $model) {
-                    return Html::a('<i class="glyphicon glyphicon-plus-sign"></i>',
-                        Url::to(['special-request-create', 'id' => $model->id], [
-                            'class' => 'btn btn-link',
-                        ]), [
-                            'title' => 'Add special request',
-                        ]);
-                },
+//                'specRequest' => function ($url, $model) {
+//                    return Html::a('<i class="glyphicon glyphicon-plus-sign"></i>',
+//                        Url::to(['special-request-create', 'id' => $model->id], [
+//                            'class' => 'btn btn-link',
+//                        ]), [
+//                            'title' => 'Add special request',
+//                        ]);
+//                },
                 'declaration' => function ($url, $model) {
                     return Html::a('<i class="glyphicon glyphicon-list-alt"></i>',
                         Url::to(['declaration-update', 'id' => $model->id], [

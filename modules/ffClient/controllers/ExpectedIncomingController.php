@@ -146,9 +146,6 @@
         public function actionUpdate($id)
         {
             $model = $this->getForm(ExpectedIncomingForm::className(), $id);
-            if($model->user_id !== \Yii::$app->user->ffId) {
-                throw new NotFoundHttpException("Expected incoming not found!");
-            }
 
             //saving data
             if ($data = \Yii::$app->request->post('ExpectedIncomingForm')) {
@@ -161,6 +158,9 @@
 
             //render update form
             $expectedIncoming = ExpectedIncoming::findOne(['id' => $id]);
+            if($expectedIncoming->user_id != \Yii::$app->user->ffId) {
+                throw new NotFoundHttpException("Expected incoming not found!");
+            }
             $model->setAttributes($expectedIncoming->getAttributes(), false);
 
             return $this->render('update', [

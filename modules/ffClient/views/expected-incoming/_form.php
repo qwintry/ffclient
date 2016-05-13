@@ -44,15 +44,6 @@
     ])->textarea() ?>
 </div>
 
-<?php if (isset($model->id)): ?>
-    <div class="row">
-        <?= $form->field($model, 'received', [
-            'options' => [
-                'class' => 'col-lg-3',
-            ],
-        ])->checkbox() ?>
-    </div>
-<?php endif; ?>
 <div class="form-group">
     <div class="col-lg-11">
         <?= Html::submitButton(\Yii::t('app', 'Submit'), ['class' => 'btn btn-primary']) ?>
