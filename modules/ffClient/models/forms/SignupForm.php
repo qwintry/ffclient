@@ -21,7 +21,6 @@
         public $email;
         public $password;
         public $ff_id;
-        public $api_key;
 
         /**
          * @inheritdoc
@@ -31,7 +30,7 @@
             return [
                 [['first_name', 'last_name'], 'filter', 'filter' => 'trim'],
                 [['first_name', 'last_name'], 'required'],
-                [['first_name', 'last_name', 'api_key'], 'string', 'min' => 2, 'max' => 255],
+                [['first_name', 'last_name'], 'string', 'min' => 2, 'max' => 255],
                 ['email', 'filter', 'filter' => 'trim'],
                 ['email', 'required'],
                 ['email', 'email'],
@@ -74,7 +73,6 @@
             $user->last_name = $this->last_name;
             $user->email = $this->email;
             $user->ff_id = $this->ff_id;
-            $user->api_key = $this->api_key;
             $user->setPassword($this->password);
             $user->generateAuthKey();
 

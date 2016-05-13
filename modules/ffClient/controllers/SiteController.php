@@ -37,7 +37,6 @@
                 $model->checkApiErrors($response);
                 if (!$model->hasErrors()) {
                     $model->ff_id = ArrayHelper::getValue($response, 'id');
-                    $model->api_key = ArrayHelper::getValue($response, 'api_key');
                     if ($user = $model->signup()) {
                         if (\Yii::$app->getUser()->login($user)) {
                             return $this->goHome();
