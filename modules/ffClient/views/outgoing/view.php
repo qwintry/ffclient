@@ -71,9 +71,12 @@
     <?php foreach ($model->passportPhotosForApi as $photo): ?>
         <?php if ($photo['base64Extension'] == 'pdf'): ?>
             <div class="col-md-4">
-                <embed src="data:application/pdf;base64,<?= $photo['base64Data']?>">
+                <object data="data:application/pdf;base64,<?= $photo['base64Data']?>" type="application/pdf" width="100%" height="200px">
+                    <p>Pdf file does not be shown, please download it via link below</p>
+                </object>
+                <a href="data:application/pdf;base64,<?= $photo['base64Data']?>">Download file</a>
             </div>
-            <?php else: ?>
+        <?php else: ?>
             <div class="col-md-4">
                 <?= Html::img("data: image/*;base64,".$photo['base64Data'], [
                     'style' => 'max-height:200px',
