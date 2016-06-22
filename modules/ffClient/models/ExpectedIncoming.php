@@ -19,8 +19,10 @@
         const METHOD_CREATE = 'POST';
         const METHOD_SAVE = 'PATCH';
 
+        /**
+         * @var array
+         */
         protected static $defaultFilter = [
             'expand' => 'specRequests,items,declaration',
         ];
-
     }

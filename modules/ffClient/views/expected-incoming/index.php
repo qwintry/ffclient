@@ -10,13 +10,13 @@
      *
      * @var \yii\data\ArrayDataProvider $provider
      */
-    $title = 'Expected Incomings';
+    $title = \Yii::t('app', 'Expected Incoming');
     $this->title = $title;
 ?>
 
 <h1>
     <?= $title ?>
-    <?= Html::a('Create', \yii\helpers\Url::to(['/ffClient/expected-incoming/create']), [
+    <?= Html::a(\Yii::t('app', 'Create'), \yii\helpers\Url::to(['/ffClient/expected-incoming/create']), [
         'class' => 'btn btn-success  btn-sm',
     ]) ?>
 </h1>
@@ -24,7 +24,7 @@
 <?= \yii\grid\GridView::widget([
     'dataProvider' => $provider,
     'columns'      => [
-        'id',
+//        'id',
         'tracking',
 //        [
 //            'class'   => \yii\grid\Column::className(),

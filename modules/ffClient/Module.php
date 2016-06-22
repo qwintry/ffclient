@@ -18,6 +18,7 @@
         const ROUTE_INCOMING_INDEX = 'incoming_index';
         const ROUTE_INCOMING_VIEW = 'incoming_view';
         const ROUTE_INCOMING_UPDATE = 'incoming_update';
+        const ROUTE_SPECIAL_REQUEST_INDEX = 'special_request_index';
         const ROUTE_SPECIAL_REQUEST_CREATE = 'special_request_create';
         const ROUTE_SPECIAL_REQUEST_VIEW = 'special_request_view';
         const ROUTE_SPECIAL_REQUEST_UPDATE = 'special_request_update';
@@ -57,9 +58,10 @@
             self::ROUTE_INCOMING_VIEW            => 'api/incoming/view',
             self::ROUTE_INCOMING_UPDATE          => 'api/incoming/update',
             //spec request
+            self::ROUTE_SPECIAL_REQUEST_INDEX    => 'api/spec-request/index',
             self::ROUTE_SPECIAL_REQUEST_CREATE   => 'api/spec-request/create',
             self::ROUTE_SPECIAL_REQUEST_VIEW     => 'api/spec-request/view',
-            self::ROUTE_SPECIAL_REQUEST_UPDATE     => 'api/spec-request/update',
+            self::ROUTE_SPECIAL_REQUEST_UPDATE   => 'api/spec-request/update',
             //outgoing
             self::ROUTE_OUTGOING_INDEX           => 'api/outgoing/index',
             self::ROUTE_OUTGOING_VIEW            => 'api/outgoing/view',
@@ -184,6 +186,8 @@
                     'class' => Reference::className(),
                 ],
             ]);
+
+            $this->registerTranslations();
         }
 
         /**
@@ -240,5 +244,34 @@
         public function getApiRoute($route)
         {
             return ArrayHelper::getValue($this->routes, $route);
+        }
+
+
+        /**
+         * Register Translations
+         */
+        public function registerTranslations()
+        {
+            \Yii::$app->i18n->translations['modules/ffClient/*'] = [
+                'class'          => 'yii\i18n\PhpMessageSource',
+                'sourceLanguage' => 'en-US',
+                'basePath'       => '@app/modules/ffClient/messages',
+                'fileMap'        => [
+                    'modules/ffClient/common' => 'common.php',
+                ],
+            ];
+        }
+
+        /**
+         * @param $category
+         * @param $message
+         * @param array $params
+         * @param null $language
+         *
+         * @return string
+         */
+        public static function t($category, $message, $params = [], $language = null)
+        {
+            return \Yii::t('modules/ffClient/'.$category, $message, $params, $language);
         }
     }

@@ -12,6 +12,7 @@
 
     class SpecialRequest extends ApiModel
     {
+        const ROUTE_INDEX = Module::ROUTE_SPECIAL_REQUEST_INDEX;
         const ROUTE_CREATE = Module::ROUTE_SPECIAL_REQUEST_CREATE;
         const ROUTE_VIEW = Module::ROUTE_SPECIAL_REQUEST_VIEW;
         const ROUTE_UPDATE = Module::ROUTE_SPECIAL_REQUEST_UPDATE;

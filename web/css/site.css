@@ -89,3 +89,21 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+.mailbox {
+    padding: 7px;
+    background-color: wheat;
+    background-image: url(/images/mailbox-bg.png);
+    border-radius: 4px;
+}
+
+.mailbox .activate-profile {
+    background-color: #f4eee1;
+    padding: 45px;
+    border-radius: 5px;
+    box-shadow: -1px -1px 0 #bab180;
+}
+
+body {
+    background: url(/images/bg-sky.jpg) no-repeat center top;
+}

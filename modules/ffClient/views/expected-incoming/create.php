@@ -9,7 +9,7 @@
      * @var \app\modules\ffClient\models\forms\ExpectedIncomingForm $model
      */
 
-    $title = 'Create new Expected Incoming';
+    $title = \app\modules\ffClient\Module::t('common', 'Create new Expected Incoming');
     $this->title = $title;
 ?>
 

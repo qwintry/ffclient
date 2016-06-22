@@ -12,7 +12,7 @@
      * @var \yii\base\View $this
      */
 
-    $title = 'Incomings';
+    $title = \Yii::t('app', 'Incomings');
     $this->title = $title;
 ?>
 
@@ -29,17 +29,17 @@
         'status',
         'weight',
         'shop',
-//        [
-//            'class'   => \yii\grid\Column::className(),
-//            'header'  => 'User',
-//            'content' => function ($model, $key, $index) {
-//                if ($model->user_id) {
-//                    return Html::a("User #".$model->user_id, Url::to(['user/view-ex', 'id' => $model->user_id]));
-//                }
-//
-//                return null;
-//            },
-//        ],
+        //        [
+        //            'class'   => \yii\grid\Column::className(),
+        //            'header'  => 'User',
+        //            'content' => function ($model, $key, $index) {
+        //                if ($model->user_id) {
+        //                    return Html::a("User #".$model->user_id, Url::to(['user/view-ex', 'id' => $model->user_id]));
+        //                }
+        //
+        //                return null;
+        //            },
+        //        ],
         [
             'class'   => \yii\grid\Column::className(),
             'header'  => 'Outgoing',

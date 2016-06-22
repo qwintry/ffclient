@@ -206,4 +206,21 @@
 
             return $result;
         }
+
+
+        /**
+         * @inheritdoc
+         * @param string $attribute
+         *
+         * @return string
+         */
+        public function getAttributeLabel($attribute)
+        {
+            $label = Module::t('common', mb_strtolower($attribute));
+            if($label != $attribute) {
+                return $label;
+            }
+
+            return parent::getAttributeLabel($attribute);
+        }
     }
