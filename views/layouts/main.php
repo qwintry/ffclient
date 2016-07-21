@@ -74,12 +74,6 @@
     </header>
 
     <div class="container">
-
-        <!--        --><? //= Breadcrumbs::widget([
-            //            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            //        ]) ?>
-
-        <!--        --><? //= \yii\bootstrap\Alert::widget(); ?>
         <?= $content ?>
     </div>
 </div>
