@@ -107,3 +107,216 @@ a.desc:after {
 body {
     background: url(/images/bg-sky.jpg) no-repeat center top;
 }
+
+.front-you-buy div {
+    padding: 93px 0 0 0;
+    margin-bottom: 20px;
+    background: transparent center 19px;
+    background-repeat: no-repeat;
+    -webkit-animation: front-you-buy1 800ms ease;
+    -moz-animation: front-you-buy1 800ms ease;
+    -o-animation: front-you-buy1 800ms ease;
+    animation: front-you-buy1 800ms ease;
+}
+
+.front-you-buy-1 div {
+    background-image: url(/images/icon-front-1.svg);
+}
+
+.front-you-buy-2 div {
+    background-image: url(/images/icon-front-2.svg);
+    background-position: center 26px;
+}
+
+.front-you-buy-3 div {
+    background-image: url(/images/icon-front-3.svg);
+    background-position: center top;
+}
+
+.site-index section {
+    margin: 40px 0 40px 0;
+}
+
+.personaj-front {
+    max-height: 300px;
+    margin: auto;
+}
+
+.why-we {
+    background: url("/images/icon-why-1.svg") no-repeat scroll 14px 0 rgba(0, 0, 0, 0);
+    margin: 0 1.9% 2% 0;
+    padding-left: 63px;
+}
+
+.why-we-2 {
+    background-image: url("/images/icon-why-2.svg");
+    background-position: 7px 0;
+}
+
+.why-we-3 {
+    background-image: url("/images/icon-why-6.svg");
+    background-position: 9px 0;
+}
+
+.why-we-4 {
+    background-image: url("/images/icon-why-4.svg");
+    background-position: 0 0;
+}
+
+.why-we h3 {
+    color: #ff7f00;
+}
+
+.review {
+    padding: 5% 8%;
+    background-color: #eff9fe;
+    box-shadow: 0 3px 13px #bed8e2;
+    text-align: left;
+}
+
+.logos-tried a {
+    display: inline-block;
+    opacity: 0.7;
+    margin: 0 7px;
+    height: 69px;
+    background-color: #e3e;
+    background: transparent url(../images/logos-tried.png) no-repeat left top;
+}
+
+a.logos-tried-lifehacker {
+    width: 97px;
+    background-position: -90px 0px;
+}
+
+a.logos-tried-lifehacker:hover {
+    background-position: -90px -79px;
+}
+
+a.logos-tried-droider {
+    width: 102px;
+    background-position: -272px 0px;
+}
+
+a.logos-tried-droider:hover {
+    background-position: -272px -79px;
+}
+
+a.logos-tried-yougifted {
+    width: 48px;
+    background-position: -210px 0px;
+}
+
+a.logos-tried-yougifted:hover {
+    background-position: -210px -79px;
+}
+
+a.logos-tried-mailru {
+    width: 135px;
+    background-position: -388px 0px;
+}
+
+a.logos-tried-mailru:hover {
+    background-position: -388px -79px;
+}
+
+a.logos-tried-exler {
+    width: 76px;
+    background-position: -540px 0px;
+}
+
+a.logos-tried-exler:hover {
+    background-position: -540px -79px;
+}
+
+a.logos-tried-ixbt {
+    width: 86px;
+    background-position: -628px 0px;
+}
+
+a.logos-tried-ixbt:hover {
+    background-position: -628px -79px;
+}
+
+a.logos-tried-puregoogle {
+    width: 100px;
+    background-position: -862px 0px;
+}
+
+a.logos-tried-puregoogle:hover {
+    background-position: -862px -79px;
+}
+
+a.logos-tried-rozetked {
+    width: 101px;
+    background-position: -737px 0px;
+}
+
+a.logos-tried-rozetked:hover {
+    background-position: -737px -79px;
+}
+
+.they-tried {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 18px;
+    font-size: 0.85em;
+    color: #8c8c8c;
+    margin: 0 14px 0 7px;
+    line-height: normal;
+    height: 69px;
+}
+
+.logo-holder {
+    height: 50px;
+}
+.calc-detailed-container .marker-recommend, .page-delivery-marker-recommend {
+    background: transparent url(/images/marker-orange.png) no-repeat 50% 50%;
+    width: 122px;
+    margin: 0 auto 40px auto;
+    clear: both;
+    padding: 20px 0;
+}
+.marker-delivery, .marker-customs {
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    color: #6d6d6d;
+    padding: 15px 10px 10px 10px;
+    position: relative;
+    margin: 14px auto 10px auto;
+    text-align: center;
+}
+.delivery-icon, .customs-limit-icon {
+    background: transparent url(/images/icon-delivery.png) no-repeat center top;
+    width: 34px;
+    height: 22px;
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    margin-left: -17px;
+    background-color: #fff;
+}
+.customs-limit-icon {
+    background-image: url(/images/icon-customs-grey.png);
+    width: 33px;
+    height: 23px;
+    top: -13px;
+}
+.calc-help h4 {
+    background: transparent url(/images/icon-blue-photo.png) no-repeat left top;
+    padding: 5px 0 5px 38px;
+    margin: 0;
+    color: #59aacf;
+}
+.calc-help-2 h4 {
+    background-image: url(/images/icon-blue-rebates.png);
+    padding-left: 45px;
+}
+.calc-help-3 h4 {
+    background-image: url(/images/icon-blue-insurance.png);
+    padding-left: 32px;
+}
+.social-icon {
+    margin-bottom: 20px;
+    color: #7a7a7a;
+    font-size: 18px;
+}

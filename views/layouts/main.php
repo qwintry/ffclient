@@ -28,14 +28,14 @@
     <header>
         <?php
             NavBar::begin([
-                'brandLabel' => Yii::$app->name,
-                'brandUrl'   => Yii::$app->homeUrl,
+                'brandLabel' => \Yii::$app->language == 'ru' ? 'Бандеролька' : 'Qwintry',
+                'brandUrl'   => \Yii::$app->homeUrl,
                 'options'    => [
                     'class' => 'navbar navbar-default',
                 ],
             ]);
             $items = [];
-            if (Yii::$app->user->isGuest) {
+            if (\Yii::$app->user->isGuest) {
                 $items[] = ['label' => 'Login', 'url' => ['/site/login']];
                 $items[] = ['label' => 'Signup', 'url' => ['/profile/registration']];
             } else {
